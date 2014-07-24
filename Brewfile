@@ -61,5 +61,7 @@ install xpdf
 
 install homebrew/versions/lua52
 
+install pyqt
+
 # Remove outdated versions from the cellar
 cleanup
