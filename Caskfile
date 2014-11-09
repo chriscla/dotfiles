@@ -21,6 +21,8 @@ cask install the-unarchiver 2> /dev/null
 # cask install transmission 2> /dev/null
 # cask install ukelele 2> /dev/null
 # cask install virtualbox 2> /dev/null
-# cask install vlc 2> /dev/null
+cask install vlc 2> /dev/null
 cask install flux 2> /dev/null
-cask insatll kindle 2> /dev/null
+cask install kindle 2> /dev/null
+cask install xquartz 2> /dev/null
+cask install wireshark 2> /dev/null
