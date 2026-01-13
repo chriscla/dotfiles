@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Special Actions Configuration Data. 03/07/2023 06:01:11 -->
+
+<Actions>
+  <Action Name="Disconnect Controller">
+    <Trigger>PS/Options</Trigger>
+    <Type>DisconnectBT</Type>
+    <Details>0</Details>
+  </Action>
+  <Action Name="Share to ALT">
+    <Trigger>Share</Trigger>
+    <Type>Key</Type>
+    <Details>18</Details>
+  </Action>
+  <Action Name="Options to F4">
+    <Trigger>Options</Trigger>
+    <Type>Key</Type>
+    <Details>115</Details>
+  </Action>
+</Actions>

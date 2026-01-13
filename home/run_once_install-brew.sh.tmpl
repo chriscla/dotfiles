@@ -1,0 +1,45 @@
+#!/bin/bash
+
+{{ if or (eq .chezmoi.os "linux") (eq .chezmoi.os "darwin") -}}
+
+# This script only runs if 'brew' is NOT found in the path.
+if command -v brew >/dev/null 2>&1; then
+    echo "✅ Homebrew is already installed. Skipping..."
+    exit 0
+fi
+
+echo "🍺 Homebrew not found. Installing..."
+
+# 1. Define the official install URL
+BREW_URL="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
+
+# 2. Safety: Download the script to a temp file first (optional but safer than direct piping)
+#    This allows you to inspect it if the script fails, rather than piping directly to bash.
+INSTALL_SCRIPT=$(mktemp)
+curl -fsSL "$BREW_URL" -o "$INSTALL_SCRIPT"
+chmod +x "$INSTALL_SCRIPT"
+
+# 3. Install Homebrew (Non-Interactive Mode)
+NONINTERACTIVE=1 /bin/bash "$INSTALL_SCRIPT"
+
+# 4. Configure Environment Variables (Crucial for immediate use)
+#    This ensures 'brew' is available for the rest of this script execution.
+{{ if eq .chezmoi.os "linux" -}}
+    # Linux standard path
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+{{ else if eq .chezmoi.os "darwin" -}}
+    # macOS Apple Silicon path
+    if [ -f "/opt/homebrew/bin/brew" ]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    # macOS Intel path
+    elif [ -f "/usr/local/bin/brew" ]; then
+        eval "$(/usr/local/bin/brew shellenv)"
+    fi
+{{ end -}}
+
+# 5. Cleanup
+rm "$INSTALL_SCRIPT"
+
+echo "🎉 Homebrew installed successfully!"
+
+{{ end -}}

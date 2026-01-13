@@ -1,0 +1,36 @@
+# Taps (Repositories)
+
+# Core Binaries (Install on BOTH Linux & Mac)
+# These tools usually have the same name on both systems.
+brew "git"
+brew "chezmoi"
+brew "fzf"
+brew "ripgrep"
+brew "fd"
+brew "node"
+brew "zsh"
+brew "curl"
+brew "jq"
+brew "bat"
+brew "eza"
+
+# Mac-Specific Logic
+if OS.mac?
+    # Casks (GUI Apps - Mac Only)
+    cask "iterm2"
+
+{{- if not .work }}
+# Don't have admin on work machines
+    # Mac App Store (Requires 'mas' CLI)
+    cask "visual-studio-code"
+    cask "google-chrome"
+    brew "mas"
+    mas "Tailscale", id: 1475387142
+{{- end }}
+end
+
+# Linux-Specific Logic (Optional)
+if OS.linux?
+    # Sometimes tool names differ slightly
+    brew "gcc" 
+end

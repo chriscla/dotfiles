@@ -1,0 +1,60 @@
+AddKeysToAgent yes
+
+Host murf
+    ForwardAgent yes
+    HostName murf.at2311.com
+
+Host m.at2311.com
+    ForwardAgent yes
+    HostName murf.at2311.com
+
+Host murf.at2311.com
+    ForwardAgent yes
+{{- if .personal }}
+    IdentityFile ~/.ssh/ansible_rsa
+{{- end }}
+    User ansible
+
+Host klipper
+    HostName klipper.at2311.com
+
+Host klipper.at2311.com
+{{- if .personal }}
+    IdentityFile ~/.ssh/id_ed25519
+{{- end }}
+    User klipper
+
+Host starbase
+    HostName starbase.at2311.com
+
+Host starbase.at2311.com
+{{- if .personal }}
+    IdentityFile ~/.ssh/ansible_rsa
+{{- end }}
+    User root
+
+Host zncshell
+    HostName rs4.risingnet.net
+{{- if .personal }}
+    IdentityFile ~/.ssh/id_ed25519
+{{- end }}
+    User bedseller39
+
+# Personal Account
+Host github.com
+    Hostname github.com
+    User git
+{{- if .personal }}
+    IdentityFile ~/.ssh/id_ed25519
+{{- end }}
+    IdentitiesOnly=yes
+
+# Holiest
+Host github-v4lyfe
+    Hostname github.com
+    User git
+{{- if .personal }}
+    IdentityFile ~/.ssh/id_holiest2
+{{- end }}
+    IdentitiesOnly=yes
+

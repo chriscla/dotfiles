@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Controller config data. 03/21/2023 20:22:05 -->
+
+<Controllers>
+  <Controller Mac="DC:AF:68:24:CE:F6" ControllerType="DS4">
+    <DS4SupportSettings>
+      <Copycat>False</Copycat>
+    </DS4SupportSettings>
+  </Controller>
+  <Controller Mac="E4:17:D8:6D:12:07" ControllerType="SwitchPro">
+    <SwitchProSupportSettings>
+      <EnableHomeLED>True</EnableHomeLED>
+    </SwitchProSupportSettings>
+  </Controller>
+</Controllers>

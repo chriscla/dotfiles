@@ -1,0 +1,3 @@
+packadd chezmoi
+source ~/.vim/basic.vim
+autocmd vimenter * ++nested colorscheme gruvbox

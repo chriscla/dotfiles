@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Brewfile hash: {{ include "dot_config/brew/Brewfile.tmpl" | sha256sum }}
+
+set -eufo pipefail
+
+{{ if or (eq .chezmoi.os "linux") (eq .chezmoi.os "darwin") -}}
+
+echo "🚀 Starting package installation..."
+
+# Try to load Homebrew if not found in PATH (e.g. if just installed in a previous step)
+if ! command -v brew &> /dev/null; then
+    {{ if eq .chezmoi.os "linux" -}}
+    if [ -d "/home/linuxbrew/.linuxbrew" ]; then
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    fi
+    {{ else if eq .chezmoi.os "darwin" -}}
+    if [ -f "/opt/homebrew/bin/brew" ]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [ -f "/usr/local/bin/brew" ]; then
+        eval "$(/usr/local/bin/brew shellenv)"
+    fi
+    {{ end -}}
+fi
+
+# Check for Homebrew
+if ! command -v brew &> /dev/null; then
+    echo "❌ Homebrew is not installed. Please run the bootstrap script first."
+    exit 1
+fi
+
+echo "📦 Installing packages from Brewfile..."
+chezmoi execute-template < "{{ joinPath .chezmoi.sourceDir "dot_config/brew/Brewfile.tmpl" }}" | \
+    brew bundle --file=/dev/stdin
+
+echo "✅ Package installation complete!"
+
+{{ else -}}
+echo "⚠️  Skipping package installation on non-Unix OS: {{ .chezmoi.os }}"
+{{ end -}}

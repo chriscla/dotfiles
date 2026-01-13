@@ -1,0 +1,9 @@
+curl
+git
+zsh
+fzf
+ripgrep
+fd-find
+jq
+bat
+eza

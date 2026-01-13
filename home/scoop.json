@@ -1,0 +1,371 @@
+{
+    "apps": [
+        {
+            "Source": "main",
+            "Updated": "2024-12-21T06:22:48.9892057-08:00",
+            "Name": "7zip",
+            "Info": "",
+            "Version": "24.09"
+        },
+        {
+            "Source": "main",
+            "Updated": "2023-06-24T19:07:00.3017888-07:00",
+            "Name": "bitwarden-cli",
+            "Info": "",
+            "Version": "2023.5.0"
+        },
+        {
+            "Source": null,
+            "Updated": "2023-09-24T14:50:10.5621892-07:00",
+            "Name": "calibre",
+            "Info": "Install failed",
+            "Version": null
+        },
+        {
+            "Source": "nerd-fonts",
+            "Updated": "2024-12-21T06:24:16.6383121-08:00",
+            "Name": "CascadiaCode-NF",
+            "Info": "",
+            "Version": "3.3.0"
+        },
+        {
+            "Source": "main",
+            "Updated": "2023-06-23T16:16:16.9842862-07:00",
+            "Name": "chezmoi",
+            "Info": "",
+            "Version": "2.34.2"
+        },
+        {
+            "Source": "nirsoft",
+            "Updated": "2024-05-20T17:06:47.2989365-07:00",
+            "Name": "controlmymonitor",
+            "Info": "",
+            "Version": "1.38"
+        },
+        {
+            "Source": "main",
+            "Updated": "2023-10-05T07:32:00.1952024-07:00",
+            "Name": "dark",
+            "Info": "",
+            "Version": "3.11.2"
+        },
+        {
+            "Source": "main",
+            "Updated": "2023-10-05T06:57:26.6260206-07:00",
+            "Name": "docker",
+            "Info": "",
+            "Version": "24.0.6"
+        },
+        {
+            "Source": "nonportable",
+            "Updated": "2023-06-27T17:07:35.6050101-07:00",
+            "Name": "dropbox-np",
+            "Info": "",
+            "Version": "nightly-20230627"
+        },
+        {
+            "Source": "extras",
+            "Updated": "2024-02-04T19:50:38.3239051-08:00",
+            "Name": "ds4windows",
+            "Info": "",
+            "Version": "3.3.3"
+        },
+        {
+            "Source": "extras",
+            "Updated": "2025-01-11T07:24:46.7578969-08:00",
+            "Name": "fancontrol",
+            "Info": "",
+            "Version": "210"
+        },
+        {
+            "Source": "main",
+            "Updated": "2023-10-16T19:00:59.0374743-07:00",
+            "Name": "ffmpeg",
+            "Info": "",
+            "Version": "6.0"
+        },
+        {
+            "Source": null,
+            "Updated": "2024-03-31T10:09:59.7481532-07:00",
+            "Name": "ffmpeg-shared",
+            "Info": "Install failed",
+            "Version": null
+        },
+        {
+            "Source": "extras",
+            "Updated": "2025-01-04T20:03:51.2182658-08:00",
+            "Name": "filebot",
+            "Info": "",
+            "Version": "5.1.6"
+        },
+        {
+            "Source": null,
+            "Updated": "2023-07-20T21:02:19.1936323-07:00",
+            "Name": "furmark",
+            "Info": "Install failed",
+            "Version": null
+        },
+        {
+            "Source": "extras",
+            "Updated": "2024-04-04T06:28:21.224776-07:00",
+            "Name": "gimp",
+            "Info": "",
+            "Version": "2.10.36-1"
+        },
+        {
+            "Source": "main",
+            "Updated": "2024-12-21T06:24:09.5570325-08:00",
+            "Name": "git",
+            "Info": "",
+            "Version": "2.47.1"
+        },
+        {
+            "Source": "extras",
+            "Updated": "2023-06-23T17:15:28.5110428-07:00",
+            "Name": "hwinfo",
+            "Info": "",
+            "Version": "7.46-5110"
+        },
+        {
+            "Source": "main",
+            "Updated": "2024-04-04T06:47:05.6157181-07:00",
+            "Name": "imagemagick",
+            "Info": "",
+            "Version": "7.1.1-29"
+        },
+        {
+            "Source": "extras",
+            "Updated": "2023-11-28T07:50:34.7048631-08:00",
+            "Name": "imhex",
+            "Info": "",
+            "Version": "1.31.0"
+        },
+        {
+            "Source": "extras",
+            "Updated": "2023-06-28T05:38:52.3580394-07:00",
+            "Name": "inkscape",
+            "Info": "",
+            "Version": "1.2.2_2022-12-09_732a01da63"
+        },
+        {
+            "Source": "main",
+            "Updated": "2023-07-20T20:58:59.1864723-07:00",
+            "Name": "innounp",
+            "Info": "",
+            "Version": "0.50"
+        },
+        {
+            "Source": "extras",
+            "Updated": "2024-09-24T19:48:29.0462956-07:00",
+            "Name": "kicad",
+            "Info": "",
+            "Version": "8.0.5"
+        },
+        {
+            "Source": "main",
+            "Updated": "2023-10-15T12:58:41.861156-07:00",
+            "Name": "neovim",
+            "Info": "",
+            "Version": "0.9.4"
+        },
+        {
+            "Source": "main",
+            "Updated": "2023-11-30T07:01:55.0895238-08:00",
+            "Name": "netcat",
+            "Info": "",
+            "Version": "1.12"
+        },
+        {
+            "Source": "extras",
+            "Updated": "2023-06-24T18:06:11.8374487-07:00",
+            "Name": "notepadplusplus",
+            "Info": "",
+            "Version": "8.5.4"
+        },
+        {
+            "Source": "main",
+            "Updated": "2024-12-21T06:23:57.6191861-08:00",
+            "Name": "oh-my-posh",
+            "Info": "",
+            "Version": "24.16.1"
+        },
+        {
+            "Source": "extras",
+            "Updated": "2023-08-02T19:05:35.6687843-07:00",
+            "Name": "openrgb",
+            "Info": "",
+            "Version": "0.9"
+        },
+        {
+            "Source": "extras",
+            "Updated": "2023-10-29T06:27:53.8187157-07:00",
+            "Name": "openshot",
+            "Info": "",
+            "Version": "3.1.1"
+        },
+        {
+            "Source": "extras",
+            "Updated": "2023-09-30T13:30:09.275715-07:00",
+            "Name": "playnite",
+            "Info": "",
+            "Version": "10.19"
+        },
+        {
+            "Source": null,
+            "Updated": "2023-11-10T12:13:04.8134837-08:00",
+            "Name": "plex-desktop",
+            "Info": "Install failed",
+            "Version": null
+        },
+        {
+            "Source": "extras",
+            "Updated": "2024-12-21T15:44:44.6360172-08:00",
+            "Name": "prusaslicer",
+            "Info": "",
+            "Version": "2.8.1"
+        },
+        {
+            "Source": "main",
+            "Updated": "2023-10-05T07:32:20.686944-07:00",
+            "Name": "python",
+            "Info": "",
+            "Version": "3.12.0"
+        },
+        {
+            "Source": "nirsoft",
+            "Updated": "2023-06-24T21:03:36.5001684-07:00",
+            "Name": "runasdate",
+            "Info": "",
+            "Version": "1.41"
+        },
+        {
+            "Source": "extras",
+            "Updated": "2024-12-21T06:24:38.8710509-08:00",
+            "Name": "spotify",
+            "Info": "",
+            "Version": "1.2.53.438.g246d60c9"
+        },
+        {
+            "Source": "versions",
+            "Updated": "2023-06-24T19:32:00.0547838-07:00",
+            "Name": "steam",
+            "Info": "",
+            "Version": "nightly-20230624"
+        },
+        {
+            "Source": "extras",
+            "Updated": "2024-12-23T06:52:58.0153567-08:00",
+            "Name": "sunshine",
+            "Info": "",
+            "Version": "0.23.1"
+        },
+        {
+            "Source": "extras",
+            "Updated": "2023-06-23T16:39:48.2710255-07:00",
+            "Name": "vcredist2022",
+            "Info": "",
+            "Version": "14.36.32532.0"
+        },
+        {
+            "Source": "extras",
+            "Updated": "2024-11-16T09:41:03.1916051-08:00",
+            "Name": "vscode",
+            "Info": "",
+            "Version": "1.95.3"
+        },
+        {
+            "Source": "nirsoft",
+            "Updated": "2023-07-31T19:15:33.1794487-07:00",
+            "Name": "wakemeonlan",
+            "Info": "",
+            "Version": "1.91"
+        },
+        {
+            "Source": "extras",
+            "Updated": "2024-12-21T06:23:46.1874665-08:00",
+            "Name": "windirstat",
+            "Info": "",
+            "Version": "2.1.1"
+        },
+        {
+            "Source": "extras",
+            "Updated": "2024-12-21T06:25:47.7643308-08:00",
+            "Name": "windows-terminal",
+            "Info": "",
+            "Version": "1.21.3231.0"
+        },
+        {
+            "Source": null,
+            "Updated": "2023-06-24T17:59:30.4832521-07:00",
+            "Name": "windowsdesktop-runtime",
+            "Info": "Install failed",
+            "Version": null
+        },
+        {
+            "Source": "extras",
+            "Updated": "2024-12-21T06:23:54.2931278-08:00",
+            "Name": "winscp",
+            "Info": "",
+            "Version": "6.3.6"
+        },
+        {
+            "Source": "main",
+            "Updated": "2025-01-04T19:07:47.9659486-08:00",
+            "Name": "youtube-dl",
+            "Info": "",
+            "Version": "2021.12.17"
+        },
+        {
+            "Source": "extras",
+            "Updated": "2025-01-02T08:07:14.9894077-08:00",
+            "Name": "youtube-dl-gui",
+            "Info": "",
+            "Version": "1.8.5"
+        },
+        {
+            "Source": "extras",
+            "Updated": "2023-06-24T06:58:07.7754862-07:00",
+            "Name": "yubikey-manager-qt",
+            "Info": "",
+            "Version": "1.2.5"
+        }
+    ],
+    "buckets": [
+        {
+            "Name": "main",
+            "Source": "https://github.com/ScoopInstaller/Main",
+            "Updated": "2025-01-11T04:34:16-08:00",
+            "Manifests": 1354
+        },
+        {
+            "Name": "extras",
+            "Source": "https://github.com/ScoopInstaller/Extras",
+            "Updated": "2025-01-11T04:34:04-08:00",
+            "Manifests": 2116
+        },
+        {
+            "Name": "versions",
+            "Source": "https://github.com/ScoopInstaller/Versions",
+            "Updated": "2025-01-11T05:35:24-08:00",
+            "Manifests": 476
+        },
+        {
+            "Name": "nirsoft",
+            "Source": "https://github.com/kodybrown/scoop-nirsoft",
+            "Updated": "2024-07-13T10:37:31-07:00",
+            "Manifests": 276
+        },
+        {
+            "Name": "nerd-fonts",
+            "Source": "https://github.com/matthewjberger/scoop-nerd-fonts",
+            "Updated": "2025-01-03T00:27:28-08:00",
+            "Manifests": 345
+        },
+        {
+            "Name": "nonportable",
+            "Source": "https://github.com/ScoopInstaller/Nonportable",
+            "Updated": "2025-01-11T04:51:27-08:00",
+            "Manifests": 127
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+[user]
+	name = Chris Clark
+	email = chriscla@gmail.com
+[safe]
+	directory = /opt/appdata/pmm/metadata
+
+{{ if  eq .chezmoi.os "windows" }}
+[credential]
+	helper = manager
+
+[credential "helperselector"]
+	selected = manager
+{{ else if eq .chezmoi.os "linux" }}
+{{   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+[credential]
+  helper = "/mnt/c/Users/chris.DESKTOP-RKHLOD0/scoop/apps/git/current/mingw64/bin/git-credential-manager.exe"
+{{   end}}
+{{ end }}

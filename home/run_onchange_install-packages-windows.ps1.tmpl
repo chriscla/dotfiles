@@ -1,0 +1,58 @@
+{{ if eq .chezmoi.os "windows" -}}
+# scoop.json hash: {{ include "scoop.json" | sha256sum }}
+
+$ErrorActionPreference = "Stop"
+
+Write-Output "🚀 Starting Windows package installation via Scoop..."
+
+# 1. Install Scoop if not present
+if (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
+    Write-Output "🍦 Scoop not found. Installing..."
+    Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+    irm get.scoop.sh | iex
+} else {
+    Write-Output "✅ Scoop is already installed."
+}
+
+# 2. Add buckets from scoop.json
+# We read the json file which is in the source directory
+$scoopConfigFile = "{{ joinPath .chezmoi.sourceDir "scoop.json" }}"
+
+if (Test-Path $scoopConfigFile) {
+    $json = Get-Content $scoopConfigFile | ConvertFrom-Json
+    
+    # Handle Buckets
+    if ($json.buckets) {
+        Write-Output "🪣 Adding buckets..."
+        foreach ($bucket in $json.buckets) {
+            $bucketName = $bucket.Name
+            # Check if bucket exists
+            $currentBuckets = scoop bucket list
+            if ($currentBuckets -notmatch "^$bucketName\s") {
+                 Write-Output "   + Adding bucket: $bucketName"
+                 scoop bucket add $bucketName
+            }
+        }
+    }
+
+    # Handle Apps
+    if ($json.apps) {
+        Write-Output "📦 Installing apps..."
+        foreach ($app in $json.apps) {
+            $appName = $app.Name
+            # Check if app is installed
+            if (-not (scoop list $appName)) {
+                 Write-Output "   + Installing: $appName"
+                 scoop install $appName
+            } else {
+                 # Optional: Update if needed, or just skip
+                 # Write-Output "   = $appName already installed."
+            }
+        }
+    }
+} else {
+    Write-Warning "⚠️  scoop.json not found at $scoopConfigFile"
+}
+
+Write-Output "🎉 Windows package installation complete!"
+{{ end -}}
