@@ -1,8 +1,15 @@
-[user]
-	name = Chris Clark
-	email = chriscla@gmail.com
-[safe]
-	directory = /opt/appdata/pmm/metadata
+
+[push]
+    autoSetupRemote = true
+
+[includeIf "gitdir:~/work/"]
+    path = ~/.gitconfig-work
+
+[includeIf "gitdir:~/code/"]
+    path = ~/.gitconfig-personal
+
+[includeIf "gitdir:~/.local/share/chezmoi/"]
+    path = ~/.gitconfig-personal
 
 {{ if  eq .chezmoi.os "windows" }}
 [credential]
