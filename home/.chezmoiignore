@@ -48,6 +48,7 @@ Library/
 {{ if not .personal }}
 # Not a trusted machine
  .ssh/**
+ *.age
 {{ end }}
 # Always include the config file and public keys
 !.ssh/rc
