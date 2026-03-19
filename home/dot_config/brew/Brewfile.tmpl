@@ -18,12 +18,12 @@ brew "eza"
 if OS.mac?
     # Casks (GUI Apps - Mac Only)
     cask "iterm2"
+    cask "font-droid-sans-mono-nerd-font"
 
 {{- if not .work }}
 # Don't have admin on work machines
     # Mac App Store (Requires 'mas' CLI)
     cask "visual-studio-code"
-    cask "google-chrome"
     brew "mas"
     mas "Tailscale", id: 1475387142
 {{- end }}
