@@ -1,14 +1,15 @@
 {
   "Profiles": [
     {
-      "Name": "Default",
+      "Name": "My Default",
       "Guid": "00E669C7-8E28-44D8-A01E-3AA3DE5FE6F8",
       "Custom Directory": "No",
-      "Selected Color Scheme": "{{ .iterm.current_theme }}",
-      "Working Directory": "/Users/chriscla",
-      "Normal Font": "DroidSansMonoForPowerline 15",
+      "Normal Font" : "DroidSansMNFM 15",
       "Terminal Type": "xterm-256color",
       "Jobs to Ignore": ["rlogin", "ssh", "slogin", "telnet"],
+      "Use Separate Colors for Light and Dark Mode" : false,
+      "Selected Color Scheme": "{{ .iterm.current_theme }}",
+      "Working Directory": "{{ .chezmoi.homeDir }}",
       "BM Growl": true,
       "Thin Strokes": 4,
       "ASCII Ligatures": true,
