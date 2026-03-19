@@ -1,0 +1,20 @@
+{
+  "Profiles": [
+    {
+      "Name": "Default",
+      "Guid": "00E669C7-8E28-44D8-A01E-3AA3DE5FE6F8",
+      "Custom Directory": "No",
+      "Selected Color Scheme": "{{ .iterm.current_theme }}",
+      "Working Directory": "/Users/chriscla",
+      "Normal Font": "DroidSansMonoForPowerline 15",
+      "Terminal Type": "xterm-256color",
+      "Jobs to Ignore": ["rlogin", "ssh", "slogin", "telnet"],
+      "BM Growl": true,
+      "Thin Strokes": 4,
+      "ASCII Ligatures": true,
+      "Use Bold Font": true,
+      "Use Bright Bold": true,
+      "Use Italic Font": true
+    }
+  ]
+}

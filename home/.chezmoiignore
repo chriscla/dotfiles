@@ -56,7 +56,6 @@ Library/
 !.ssh/*.pub
 
 # Ignore Always!
-.dotfile_extras/terminal_themes/**
 .linuxbrew/
 brew/
 .brew/

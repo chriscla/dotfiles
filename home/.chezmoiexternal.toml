@@ -72,9 +72,9 @@
     exclude = ["*.md", ".gitignore", ".github/**"]
 {{ end -}}
 {{ if eq .chezmoi.os "darwin" }}
-[".dotfile_extras/terminal_themes"]
+[".dotfile_extras/terminal_themes/schemes"]
     type = "archive"
-    url = "https://github.com/mbadolato/iTerm2-Color-Schemes/archive/master.tar.gz"
+    url = "https://github.com/mbadolato/iTerm2-Color-Schemes/releases/latest/download/iterm2-themes.tgz"
     exact = true
     stripComponents = 1
     refreshPeriod = "168h"

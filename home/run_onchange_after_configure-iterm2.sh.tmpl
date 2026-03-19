@@ -1,0 +1,34 @@
+{{ if (eq .chezmoi.os "darwin") -}}
+#!/bin/bash
+
+# iTerm2 themes checksum: {{ (glob (joinPath .chezmoi.homeDir ".dotfile_extras/terminal_themes/schemes/*.itermcolors")) | toString | sha256sum }}
+#
+PLIST_PATH="{{ .chezmoi.homeDir }}/.config/iterm2/com.googlecode.iterm2.plist"
+THEME_DIR="{{ .chezmoi.homeDir }}/.dotfile_extras/terminal_themes/schemes"
+GUID="00E669C7-8E28-44D8-A01E-3AA3DE5FE6F8"
+
+# 1. Ensure the 'Custom Color Presets' dictionary exists in your plist
+if ! /usr/libexec/PlistBuddy -c 'Print "Custom Color Presets"' "$PLIST_PATH" &>/dev/null; then
+    /usr/libexec/PlistBuddy -c 'Add "Custom Color Presets" dict' "$PLIST_PATH"
+fi
+
+# 2. Import Favorites
+echo "Syncing favorite iTerm2 themes..."
+{{ range .iterm.favorites -}}
+THEME_FILE="$THEME_DIR/{{ . }}.itermcolors"
+if [ -f "$THEME_FILE" ]; then
+    # Delete existing entry to ensure a clean overwrite
+    /usr/libexec/PlistBuddy -c 'Delete "Custom Color Presets:{{ . }}"' "$PLIST_PATH" 2>/dev/null
+    # Add and Merge the theme file
+    /usr/libexec/PlistBuddy -c 'Add "Custom Color Presets:{{ . }}" dict' "$PLIST_PATH"
+    /usr/libexec/PlistBuddy -c 'Merge "'"$THEME_FILE"'" "Custom Color Presets:{{ . }}"' "$PLIST_PATH"
+    echo "✓ {{ . }}"
+fi
+{{ end }}
+
+# 3. Lock Global Settings
+defaults write com.googlecode.iterm2 PrefsCustomFolder -string "{{ .chezmoi.homeDir }}/.config/iterm2"
+defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
+defaults write com.googlecode.iterm2 "Default Bookmark Guid" -string "$GUID"
+defaults write com.googlecode.iterm2 NoSyncNeverRemindPrefsChangesLostForFile -bool true
+{{ end -}}
