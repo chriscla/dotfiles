@@ -10,7 +10,7 @@ Host m.at2311.com
 
 Host murf.at2311.com
     ForwardAgent yes
-{{- if .personal }}
+{{- if .trusted }}
     IdentityFile ~/.ssh/ansible_rsa
 {{- end }}
     User ansible
@@ -19,7 +19,7 @@ Host klipper
     HostName klipper.at2311.com
 
 Host klipper.at2311.com
-{{- if .personal }}
+{{- if .trusted }}
     IdentityFile ~/.ssh/id_ed25519
 {{- end }}
     User klipper
@@ -28,14 +28,14 @@ Host starbase
     HostName starbase.at2311.com
 
 Host starbase.at2311.com
-{{- if .personal }}
+{{- if .trusted }}
     IdentityFile ~/.ssh/ansible_rsa
 {{- end }}
     User root
 
 Host zncshell
     HostName rs4.risingnet.net
-{{- if .personal }}
+{{- if .trusted }}
     IdentityFile ~/.ssh/id_ed25519
 {{- end }}
     User bedseller39
@@ -44,7 +44,7 @@ Host zncshell
 Host github.com
     Hostname github.com
     User git
-{{- if .personal }}
+{{- if .trusted }}
     IdentityFile ~/.ssh/id_ed25519
 {{- end }}
     IdentitiesOnly=yes
@@ -53,7 +53,7 @@ Host github.com
 Host github-v4lyfe
     Hostname github.com
     User git
-{{- if .personal }}
+{{- if .trusted }}
     IdentityFile ~/.ssh/id_holiest2
 {{- end }}
     IdentitiesOnly=yes

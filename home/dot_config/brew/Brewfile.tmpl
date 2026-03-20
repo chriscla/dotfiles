@@ -17,8 +17,14 @@ brew "eza"
 # Mac-Specific Logic
 if OS.mac?
     # Casks (GUI Apps - Mac Only)
+{{- if not .ephemeral }}
     cask "iterm2"
     cask "font-droid-sans-mono-nerd-font"
+    cask "finicky"
+    cask "spotify"
+    cask "bitwarden"
+    cask "bitwarden-cli"
+{{- end }}
 
 {{- if not .work }}
 # Don't have admin on work machines

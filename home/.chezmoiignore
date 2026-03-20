@@ -45,7 +45,7 @@ Library/
 .config/finicky/finicky.js
 {{ end }}
 
-{{ if not .personal }}
+{{ if not .trusted }}
 # Not a trusted machine
  .ssh/**
  *.age

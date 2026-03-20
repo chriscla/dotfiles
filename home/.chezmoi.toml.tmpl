@@ -2,7 +2,8 @@
 {{- $ephemeral := false -}}{{/* true if this machine is ephemeral, e.g. a cloud or VM instance */}}
 {{- $work := false -}}{{/* true if this machine is a work machine */}}
 {{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
-{{- $personal := false -}}{{/* true if this machine should have personal secrets */}}
+{{- $personal := false -}}{{/* true if this machine is your personal (non-work) machine */}}
+{{- $trusted := false -}}{{/* true if this machine should receive age secrets and private SSH keys */}}
 {{- "" -}}
 
 {{- $osID := .chezmoi.os -}}
@@ -16,31 +17,32 @@
 {{-   $headless = true -}}
 {{- end -}}
 
-{{/* work around unreliable hostname on darwin */}}
+{{/* work around unreliable hostname on darwin (assign to outer $hostname, do not shadow) */}}
 {{- $hostname := .chezmoi.hostname -}}
 {{- if eq .chezmoi.os "darwin" -}}
-{{-   $hostname := output "scutil" "--get" "LocalHostName" | trim -}}
+{{-   $hostname = output "scutil" "--get" "LocalHostName" | trim -}}
 {{- end -}}
 
 {{- if not $ephemeral -}}
-{{-   if eq $hostname "splurge2" -}}
-{{-     $personal = true -}}
-{{-   else if eq $hostname "100304-FVFGQ16XQ05P" -}}
-{{-     $personal = true -}}
-{{-     $work = true -}}
-{{-   else if eq $hostname "100304-C4THK59G2J" -}}
-{{-     $personal = true -}}
-{{-     $work = true -}}
-{{-   else if stdinIsATTY -}}
+{{-   if stdinIsATTY -}}
 {{-     $headless = promptBoolOnce . "headless" "headless" -}}
 {{-     $ephemeral = promptBoolOnce . "ephemeral" "ephemeral" -}}
+{{-     if not $ephemeral -}}
+{{-       $kind := lower (trim (promptStringOnce . "machineKind" "Machine type: type 'work' or 'personal'" "personal")) -}}
+{{-       if eq $kind "work" -}}
+{{-         $work = true -}}
+{{-       else -}}
+{{-         $personal = true -}}
+{{-       end -}}
+{{-       $trusted = true -}}
+{{-     end -}}
 {{-   else -}}
 {{-     $ephemeral = true -}}
 {{-     $headless = true -}}
 {{-   end -}}
 {{- end -}}
 
-{{- if $personal -}}
+{{- if $trusted -}}
 encryption = "age"
 [age]
     identity = "{{ .chezmoi.homeDir }}/.config/chezmoi/key.txt"
@@ -53,6 +55,7 @@ encryption = "age"
     headless = {{ $headless }}
     hostname = {{ $hostname | quote }}
     personal = {{ $personal }}
+    trusted = {{ $trusted }}
     osid = {{ $osID | quote }}
     zshPlugins = [
         "z",
