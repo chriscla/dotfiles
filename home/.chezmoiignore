@@ -55,6 +55,9 @@ Library/
 !.ssh/config
 !.ssh/*.pub
 
+# Encrypted JSON used only via template `include` in dot_gitconfig.tmpl (do not install plaintext to ~/.config).
+.config/chezmoi/git-identity.json
+
 # Ignore Always!
 .linuxbrew/
 brew/

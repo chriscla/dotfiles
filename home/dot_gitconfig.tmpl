@@ -1,10 +1,36 @@
+{{- /* FINDME: git identity — machine default from chezmoi init (.work / .personal); emails only in encrypted_private_dot_config_chezmoi_git-identity.json.age (ciphertext in git). */ -}}
+{{- $gitIdentity := dict "name" "Chris Clark" "work_email" "" "personal_email" "" -}}
+{{- $key := joinPath .chezmoi.homeDir ".config/chezmoi/key.txt" -}}
+{{- $encGi := joinPath .chezmoi.sourceDir "encrypted_private_dot_config_chezmoi_git-identity.json.age" -}}
+{{- if and (stat $key) (stat $encGi) -}}
+{{-   $plainGi := include "encrypted_private_dot_config_chezmoi_git-identity.json.age" | decrypt -}}
+{{-   $objGi := fromJson $plainGi -}}
+{{-   if $objGi -}}
+{{-     $gitIdentity = merge $gitIdentity $objGi -}}
+{{-   end -}}
+{{- end -}}
 
 [push]
     autoSetupRemote = true
 
+{{ if and (index $gitIdentity "work_email") (index $gitIdentity "personal_email") -}}
+[user]
+    name = {{ index $gitIdentity "name" | quote }}
+    email = {{ if .work }}{{ index $gitIdentity "work_email" | quote }}{{ else }}{{ index $gitIdentity "personal_email" | quote }}{{ end }}
+
+{{ end -}}
 [includeIf "gitdir:~/work/"]
     path = ~/.gitconfig-work
 
+{{ if eq .chezmoi.os "windows" }}
+[includeIf "gitdir:C:/personal/"]
+    path = ~/.gitconfig-personal
+
+{{ else }}
+[includeIf "gitdir:/personal/"]
+    path = ~/.gitconfig-personal
+
+{{ end }}
 [includeIf "gitdir:~/code/"]
     path = ~/.gitconfig-personal
 

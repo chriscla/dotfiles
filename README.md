@@ -53,6 +53,26 @@ Optional **encrypted machine names** for template data: JSON in [`encrypted_priv
 
 After that, use `chezmoi apply` whenever you pull changes, and `chezmoi edit` / `chezmoi add` as usual.
 
+### Git identity (work vs personal)
+
+This is driven by **chezmoi init** prompts (`work` vs `personal` → `.work` / `.personal` in [`home/.chezmoi.toml.tmpl`](home/.chezmoi.toml.tmpl)), not by hostnames.
+
+- **Default `user.name` / `user.email`** for repos that are not under a more specific `includeIf` rule are set in [`home/dot_gitconfig.tmpl`](home/dot_gitconfig.tmpl): **work machines** use your work email, **personal machines** use your personal email.
+- **Directory-specific overrides** (via [`home/encrypted_dot_gitconfig-work.tmpl.age`](home/encrypted_dot_gitconfig-work.tmpl.age) and [`home/encrypted_dot_gitconfig-personal.tmpl.age`](home/encrypted_dot_gitconfig-personal.tmpl.age)):
+  - Repos under `~/work/` → work identity.
+  - Repos under `/personal/` (and `~/code/` if you still use it) → personal identity.
+  - The chezmoi source tree `~/.local/share/chezmoi/` → **personal** identity so commits **to this dotfiles repo** use your personal email.
+
+**Secrets in git:** Your addresses are **not** stored in plaintext in this repository. They live only inside **age-encrypted** files (ciphertext in git). At apply time, values are merged into `~/.gitconfig` only; the encrypted file [`encrypted_private_dot_config_chezmoi_git-identity.json.age`](home/encrypted_private_dot_config_chezmoi_git-identity.json.age) is **not** installed as a separate plaintext JSON file (see [`.chezmoiignore`](home/.chezmoiignore)). Edit the secret with:
+
+```sh
+chezmoi edit encrypted_private_dot_config_chezmoi_git-identity.json.age
+```
+
+Expected JSON keys: `name`, `work_email`, `personal_email`. After changing, run `chezmoi apply`.
+
+**Commits to the dotfiles repo:** Keep using your **personal** email for commits here. The `includeIf` for `~/.local/share/chezmoi/` makes Git use `~/.gitconfig-personal` for that tree; optionally also run `git config user.email …` once in this clone (your local `.git/config` is not part of the chezmoi source).
+
 ---
 
 ## New machine: Windows

@@ -13,6 +13,7 @@ brew "curl"
 brew "jq"
 brew "bat"
 brew "eza"
+brew "nvim"
 
 # Mac-Specific Logic
 if OS.mac?
@@ -23,7 +24,8 @@ if OS.mac?
     cask "finicky"
     cask "spotify"
     cask "bitwarden"
-    cask "bitwarden-cli"
+    brew "tmux"
+    
 {{- end }}
 
 {{- if not .work }}
