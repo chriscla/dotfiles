@@ -1,0 +1,12 @@
+{{- /* Hostnames: encrypted JSON in encrypted_private_dot_config_chezmoi_machine-names.json.age; merge runs after ~/.config/chezmoi/key.txt exists (often second apply). */ -}}
+{{- $hostnames := list -}}
+{{- $key := joinPath .chezmoi.homeDir ".config/chezmoi/key.txt" -}}
+{{- $enc := joinPath .chezmoi.sourceDir "encrypted_private_dot_config_chezmoi_machine-names.json.age" -}}
+{{- if and (stat $key) (stat $enc) -}}
+{{-   $plain := include "encrypted_private_dot_config_chezmoi_machine-names.json.age" | decrypt -}}
+{{-   $obj := fromJson $plain -}}
+{{-   if and $obj (hasKey $obj "hostnames") -}}
+{{-     $hostnames = index $obj "hostnames" -}}
+{{-   end -}}
+{{- end -}}
+hostnames = {{ $hostnames | toJson }}
