@@ -28,7 +28,7 @@ if OS.mac?
     
 {{- end }}
 
-{{- if not .work }}
+{{- if .personal }}
 # Don't have admin on work machines
     # Mac App Store (Requires 'mas' CLI)
     cask "visual-studio-code"
@@ -42,3 +42,7 @@ if OS.linux?
     # Sometimes tool names differ slightly
     brew "gcc" 
 end
+
+{{- if not .ephemeral }}
+brew "gh"
+{{- end }}
