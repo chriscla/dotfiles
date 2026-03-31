@@ -189,6 +189,7 @@ alias chownmedia='() { sudo chown -R media:media $1;sudo chmod -R g+rws,o+r $1 ;
 alias smurf='ssh ansible@murf.at2311.com'
 alias vim="nvim"
 alias vi="nvim"
+alias nvim-update='nvim --headless "+Lazy! sync" +qa && chezmoi add ~/.config/nvim/lazy-lock.json'
 
 envrun() {
   if [ -f .env ]; then
