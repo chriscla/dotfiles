@@ -1,0 +1,18 @@
+{{ if eq .chezmoi.os "windows" -}}
+# Extension list fingerprint (bump comment when you add IDs): gruvbox-1
+$ErrorActionPreference = "Continue"
+
+$extensions = @("jdinhlife.gruvbox")
+$commands = @("cursor", "code")
+
+foreach ($cmdName in $commands) {
+    $cmd = Get-Command $cmdName -ErrorAction SilentlyContinue
+    if (-not $cmd) { continue }
+    foreach ($ext in $extensions) {
+        Write-Output "📦 $($cmd.Name) --install-extension $ext"
+        & $cmdName --install-extension $ext 2>$null
+    }
+}
+{{ else -}}
+# Not Windows; use run_onchange_install-vscode-extensions.sh instead.
+{{ end -}}

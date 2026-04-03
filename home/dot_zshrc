@@ -17,7 +17,6 @@ export PSQL_HISTORY="$XDG_STATE_HOME/psql/history"
 # Docker
 export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 
-
 export LESSHISTFILE="$XDG_STATE_HOME/less/history"
 
 SPACESHIP_PROMPT_ASYNC=true
@@ -29,9 +28,10 @@ SPACESHIP_PROMPT_ORDER=(
     user
     dir
     git
+    venv
+    uv
     node
     docker_compose
-    venv
     line_sep
     sudo
     char
@@ -99,7 +99,7 @@ zstyle ':omz:update' mode disabled  # disable automatic updates
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(z chezmoi brew colorize git python virtualenvwrapper tmux ssh-agent nvm fzf fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(z chezmoi brew colorize uv git python tmux ssh-agent nvm fzf fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
 
 # Loads keys only on first-use
 zstyle ':omz:plugins:ssh-agent' lazy yes

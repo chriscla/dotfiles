@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# Extension list fingerprint (bump comment when you add IDs): gruvbox-1
+set -euo pipefail
+
+{{ if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") -}}
+
+EXTENSIONS=(
+  "jdinhlife.gruvbox"
+)
+
+# Resolve CLIs: try app-bundle paths before `command -v`.
+# On macOS, Cursor’s palette “Install 'cursor' command in PATH” uses AppleScript (osascript) to add a shim;
+# a `cursor` on PATH can also be a wrong/stub binary (e.g. under ~/.local/bin), so prefer
+# …/Cursor.app/Contents/Resources/app/bin/cursor when present.
+resolve_bin() {
+  local name=$1
+  shift
+  local p
+  for p in "$@"; do
+    if [[ -x "$p" ]]; then
+      printf '%s\n' "$p"
+      return 0
+    fi
+  done
+  if command -v "$name" &>/dev/null; then
+    command -v "$name"
+    return 0
+  fi
+  return 1
+}
+
+install_for_named() {
+  local bin
+  if ! bin=$(resolve_bin "$@"); then
+    return 0
+  fi
+  local ext
+  for ext in "${EXTENSIONS[@]}"; do
+    echo "📦 $bin --install-extension $ext"
+    "$bin" --install-extension "$ext" </dev/null || true
+  done
+}
+
+{{ if eq .chezmoi.os "darwin" -}}
+install_for_named cursor \
+  "/Applications/Cursor.app/Contents/Resources/app/bin/cursor" \
+  "$HOME/Applications/Cursor.app/Contents/Resources/app/bin/cursor"
+install_for_named code \
+  "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" \
+  "/Applications/VSCodium.app/Contents/Resources/app/bin/codium" \
+  "$HOME/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
+{{ else -}}
+install_for_named cursor \
+  "/usr/local/bin/cursor" \
+  "/usr/bin/cursor" \
+  "$HOME/.local/bin/cursor"
+install_for_named code \
+  "/usr/local/bin/code" \
+  "/usr/bin/code" \
+  "$HOME/.local/bin/code" \
+  "/usr/bin/codium" \
+  "$HOME/.local/bin/codium"
+{{ end -}}
+
+{{ else -}}
+# Windows: use run_onchange_install-vscode-extensions.ps1
+exit 0
+{{ end -}}
