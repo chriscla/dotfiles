@@ -1,11 +1,29 @@
 #!/usr/bin/env bash
-# Extension list fingerprint (bump comment when you add IDs): gruvbox-1
+# Extension list fingerprint (bump comment when you add IDs): python-cursor-2
 set -euo pipefail
 
 {{ if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") -}}
 
-EXTENSIONS=(
+# Cursor: Anysphere marketplace IDs where applicable.
+EXTENSIONS_CURSOR=(
   "jdinhlife.gruvbox"
+  "ms-python.python"
+  "ms-python.vscode-python-envs"
+  "anysphere.cursorpyright"
+  "ms-python.debugpy"
+  "anysphere.remote-containers"
+  "charliermarsh.ruff"
+)
+
+# VS Code / VSCodium: Microsoft Remote-* and Pylance; no anysphere.* extensions.
+EXTENSIONS_CODE=(
+  "jdinhlife.gruvbox"
+  "ms-python.python"
+  "ms-python.vscode-python-envs"
+  "ms-python.vscode-pylance"
+  "ms-python.debugpy"
+  "ms-vscode-remote.remote-containers"
+  "charliermarsh.ruff"
 )
 
 # Resolve CLIs: try app-bundle paths before `command -v`.
@@ -30,14 +48,22 @@ resolve_bin() {
 }
 
 install_for_named() {
+  local cmd=$1
+  shift
+  local -a exts=()
+  case "$cmd" in
+    cursor) exts=("${EXTENSIONS_CURSOR[@]}"); ;;
+    code) exts=("${EXTENSIONS_CODE[@]}"); ;;
+    *) return 0 ;;
+  esac
   local bin
-  if ! bin=$(resolve_bin "$@"); then
+  if ! bin=$(resolve_bin "$cmd" "$@"); then
     return 0
   fi
   local ext
-  for ext in "${EXTENSIONS[@]}"; do
-    echo "📦 $bin --install-extension $ext"
-    "$bin" --install-extension "$ext" </dev/null || true
+  for ext in "${exts[@]}"; do
+    echo "📦 $bin --install-extension $ext --profile Default"
+    "$bin" --install-extension "$ext" --profile "Default" </dev/null || true
   done
 }
 

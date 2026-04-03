@@ -1,16 +1,36 @@
 {{ if eq .chezmoi.os "windows" -}}
-# Extension list fingerprint (bump comment when you add IDs): gruvbox-1
+# Extension list fingerprint (bump comment when you add IDs): python-cursor-2
 $ErrorActionPreference = "Continue"
 
-$extensions = @("jdinhlife.gruvbox")
-$commands = @("cursor", "code")
+$extensionsCursor = @(
+    "jdinhlife.gruvbox",
+    "ms-python.python",
+    "ms-python.vscode-python-envs",
+    "anysphere.cursorpyright",
+    "ms-python.debugpy",
+    "anysphere.remote-containers",
+    "charliermarsh.ruff",
+    "anysphere.remote-wsl"
+)
 
-foreach ($cmdName in $commands) {
+$extensionsCode = @(
+    "jdinhlife.gruvbox",
+    "ms-python.python",
+    "ms-python.vscode-python-envs",
+    "ms-python.vscode-pylance",
+    "ms-python.debugpy",
+    "ms-vscode-remote.remote-containers",
+    "charliermarsh.ruff",
+    "ms-vscode-remote.remote-wsl"
+)
+
+foreach ($cmdName in @("cursor", "code")) {
     $cmd = Get-Command $cmdName -ErrorAction SilentlyContinue
     if (-not $cmd) { continue }
+    $extensions = if ($cmdName -eq "cursor") { $extensionsCursor } else { $extensionsCode }
     foreach ($ext in $extensions) {
-        Write-Output "📦 $($cmd.Name) --install-extension $ext"
-        & $cmdName --install-extension $ext 2>$null
+        Write-Output "📦 $($cmd.Name) --install-extension $ext --profile Default"
+        & $cmdName --install-extension $ext --profile "Default" 2>$null
     }
 }
 {{ else -}}
