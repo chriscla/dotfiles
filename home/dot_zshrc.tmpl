@@ -142,13 +142,15 @@ zstyle ':fzf-tab:*' fzf-flags --select-1
 # Use `show-group full` if you want colored group labels back.
 zstyle ':fzf-tab:*' show-group quiet
 
-_starship_cache="$XDG_CACHE_HOME/starship/init.zsh"
-if [[ ! -f "$_starship_cache" || "$_starship_cache" -ot =starship ]]; then
-  mkdir -p "${_starship_cache:h}"
-  starship init zsh > "$_starship_cache"
+if (( $+commands[starship] )); then
+  _starship_cache="$XDG_CACHE_HOME/starship/init.zsh"
+  if [[ ! -f "$_starship_cache" || "$_starship_cache" -ot =starship ]]; then
+    mkdir -p "${_starship_cache:h}"
+    starship init zsh > "$_starship_cache"
+  fi
+  source "$_starship_cache"
+  unset _starship_cache
 fi
-source "$_starship_cache"
-unset _starship_cache
 
 if [ -n "${ZSH_DEBUGRC+1}" ]; then
     zprof
