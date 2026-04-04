@@ -11,9 +11,9 @@ Host m.at2311.com
 Host murf.at2311.com
     ForwardAgent yes
 {{- if .trusted }}
-    IdentityFile ~/.ssh/ansible_rsa
+    IdentityFile ~/.ssh/id_ed25519
 {{- end }}
-    User ansible
+    User cyrus
 
 Host klipper
     HostName klipper.at2311.com
@@ -29,9 +29,9 @@ Host starbase
 
 Host starbase.at2311.com
 {{- if .trusted }}
-    IdentityFile ~/.ssh/ansible_rsa
+    IdentityFile ~/.ssh/id_ed25519
 {{- end }}
-    User root
+    User cyrus
 
 Host zncshell
     HostName rs4.risingnet.net
