@@ -322,6 +322,8 @@ set -sg escape-time 10
 set -g focus-events on
 set -g allow-passthrough on
 set -ga terminal-overrides ',*:Tc'
+set -gq utf8 on
+set -gq status-utf8 on
 
 # Use the default shell detected at runtime
 set-option -g default-shell "{{ lookPath "zsh" | default (lookPath "bash") | default "/bin/sh" }}"
