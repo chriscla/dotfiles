@@ -4,7 +4,7 @@
 
 set -eufo pipefail
 
-{{ if or (eq .chezmoi.os "linux") (eq .chezmoi.os "darwin") -}}
+{{ if and (or (eq .chezmoi.os "linux") (eq .chezmoi.os "darwin")) (not .ephemeral) -}}
 
 echo "🚀 Starting package installation..."
 
