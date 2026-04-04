@@ -8,6 +8,13 @@
             "Version": "24.09"
         },
         {
+            "Source": "nerd-fonts",
+            "Updated": "2024-12-21T06:24:16.6383121-08:00",
+            "Name": "CascadiaCode-NF",
+            "Info": "",
+            "Version": "3.3.0"
+        },
+        {
             "Source": "main",
             "Updated": "2023-06-24T19:07:00.3017888-07:00",
             "Name": "bitwarden-cli",
@@ -20,13 +27,6 @@
             "Name": "calibre",
             "Info": "Install failed",
             "Version": null
-        },
-        {
-            "Source": "nerd-fonts",
-            "Updated": "2024-12-21T06:24:16.6383121-08:00",
-            "Name": "CascadiaCode-NF",
-            "Info": "",
-            "Version": "3.3.0"
         },
         {
             "Source": "main",
@@ -244,6 +244,13 @@
             "Name": "spotify",
             "Info": "",
             "Version": "1.2.53.438.g246d60c9"
+        },
+        {
+            "Source": "main",
+            "Updated": "2026-04-03T00:00:00.0000000-07:00",
+            "Name": "starship",
+            "Info": "",
+            "Version": "latest"
         },
         {
             "Source": "versions",
