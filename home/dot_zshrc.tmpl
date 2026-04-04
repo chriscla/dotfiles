@@ -73,13 +73,15 @@ ZSH_AUTOSUGGEST_STRATEGY=(skip_z_jump history)
 source $ZSH/oh-my-zsh.sh
 
 # Source fzf keybindings/completions (cached for speed)
-_fzf_cache="$XDG_CACHE_HOME/fzf/fzf.zsh"
-if [[ ! -f "$_fzf_cache" || "$_fzf_cache" -ot =fzf ]]; then
-  mkdir -p "${_fzf_cache:h}"
-  fzf --zsh > "$_fzf_cache"
+if (( $+commands[fzf] )); then
+  _fzf_cache="$XDG_CACHE_HOME/fzf/fzf.zsh"
+  if [[ ! -f "$_fzf_cache" || "$_fzf_cache" -ot =fzf ]]; then
+    mkdir -p "${_fzf_cache:h}"
+    fzf --zsh > "$_fzf_cache"
+  fi
+  source "$_fzf_cache"
+  unset _fzf_cache
 fi
-source "$_fzf_cache"
-unset _fzf_cache
 
 export LANG=en_US.UTF-8
 export MANPAGER="nvim +Man!"
