@@ -1,0 +1,55 @@
+format = """
+$time\
+$hostname\
+$username\
+$directory\
+{{- if .work }}
+$aws\
+{{- end }}
+$git_branch\
+$git_status\
+$python\
+$nodejs\
+$line_break\
+$sudo\
+$character"""
+
+add_newline = true
+
+[character]
+success_symbol = "[⚡](bold green)"
+error_symbol = "[⚡](bold red)"
+
+[username]
+show_always = true
+format = "[$user]($style) "
+
+[directory]
+truncation_length = 5
+
+[git_branch]
+format = "[$symbol$branch(:$remote_branch)]($style) "
+
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style) )'
+
+[python]
+format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+
+[nodejs]
+format = "[$symbol($version )]($style)"
+
+[time]
+disabled = true
+
+[sudo]
+disabled = false
+format = "[$symbol]($style)"
+
+{{- if .work }}
+
+[aws]
+format = '[on $symbol($profile )]($style)'
+symbol = "🅰 "
+style = "blue"
+{{- end }}

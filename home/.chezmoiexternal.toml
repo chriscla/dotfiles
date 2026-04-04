@@ -42,13 +42,6 @@
     stripComponents = 1
     refreshPeriod = "168h"
     exclude = ["*.md", ".gitignore", ".github/**"]
-[".oh-my-zsh/custom/themes/spaceship"]
-    type = "archive"
-    url = "https://github.com/spaceship-prompt/spaceship-prompt/archive/master.tar.gz"
-    exact = true
-    stripComponents = 1
-    refreshPeriod = "168h"
-    exclude = ["*.md", ".gitignore", ".github/**"]
 [".vim/basic.vim"]
     type = "file"
     url = "https://raw.githubusercontent.com/amix/vimrc/master/vimrcs/basic.vim"

@@ -29,32 +29,7 @@ export AWS_CLI_HISTORY_FILE="$XDG_DATA_HOME/aws/history"
 
 export LESSHISTFILE="$XDG_STATE_HOME/less/history"
 
-SPACESHIP_PROMPT_ASYNC=true
-SPACESHIP_PROMPT_ADD_NEWLINE=true
-SPACESHIP_CHAR_SYMBOL="⚡"
-SPACESHIP_PROMPT_ORDER=(
-    time
-    host
-    user
-    dir
-{{- if .work }}
-    aws
-{{- end }}
-    git
-    uv
-    node
-    line_sep
-    sudo
-    char
-)
-
-ZSH_THEME="spaceship/spaceship"
-
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+ZSH_THEME=""
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -226,6 +201,14 @@ zstyle ':fzf-tab:*' fzf-flags --select-1
 # Quieter group headers — avoids extra leading text in the fzf UI in some themes/list-colors setups.
 # Use `show-group full` if you want colored group labels back.
 zstyle ':fzf-tab:*' show-group quiet
+
+_starship_cache="$XDG_CACHE_HOME/starship/init.zsh"
+if [[ ! -f "$_starship_cache" || "$_starship_cache" -ot =starship ]]; then
+  mkdir -p "${_starship_cache:h}"
+  starship init zsh > "$_starship_cache"
+fi
+source "$_starship_cache"
+unset _starship_cache
 
 if [ -n "${ZSH_DEBUGRC+1}" ]; then
     zprof
