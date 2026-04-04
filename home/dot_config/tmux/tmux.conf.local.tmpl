@@ -21,7 +21,7 @@
 #   - true
 #   - false (default)
 #   - disabled (do not modify new-window bindings)
-tmux_conf_new_window_retain_current_path=false
+tmux_conf_new_window_retain_current_path=true
 
 # new pane retains current path, possible values are:
 #   - true (default)
@@ -54,43 +54,24 @@ tmux_conf_new_session_prompt=false
 # see https://github.com/termstandard/colors
 tmux_conf_24b_colour="true"
 
-# default theme
-tmux_conf_theme_colour_1="#080808"    # dark gray
-tmux_conf_theme_colour_2="#303030"    # gray
-tmux_conf_theme_colour_3="#8a8a8a"    # light gray
-tmux_conf_theme_colour_4="#00afff"    # light blue
-tmux_conf_theme_colour_5="#ffff00"    # yellow
-tmux_conf_theme_colour_6="#080808"    # dark gray
-tmux_conf_theme_colour_7="#e4e4e4"    # white
-tmux_conf_theme_colour_8="#080808"    # dark gray
-tmux_conf_theme_colour_9="#ffff00"    # yellow
-tmux_conf_theme_colour_10="#ff00af"   # pink
-tmux_conf_theme_colour_11="#5fff00"   # green
-tmux_conf_theme_colour_12="#8a8a8a"   # light gray
-tmux_conf_theme_colour_13="#e4e4e4"   # white
-tmux_conf_theme_colour_14="#080808"   # dark gray
-tmux_conf_theme_colour_15="#080808"   # dark gray
-tmux_conf_theme_colour_16="#d70000"   # red
-tmux_conf_theme_colour_17="#e4e4e4"   # white
-
-# default theme (ansi)
-#tmux_conf_theme_colour_1="colour0"
-#tmux_conf_theme_colour_2="colour8"
-#tmux_conf_theme_colour_3="colour8"
-#tmux_conf_theme_colour_4="colour14"
-#tmux_conf_theme_colour_5="colour11"
-#tmux_conf_theme_colour_6="colour0"
-#tmux_conf_theme_colour_7="colour15"
-#tmux_conf_theme_colour_8="colour0"
-#tmux_conf_theme_colour_9="colour11"
-#tmux_conf_theme_colour_10="colour13"
-#tmux_conf_theme_colour_11="colour10"
-#tmux_conf_theme_colour_12="colour8"
-#tmux_conf_theme_colour_13="colour15"
-#tmux_conf_theme_colour_14="colour0"
-#tmux_conf_theme_colour_15="colour0"
-#tmux_conf_theme_colour_16="colour1"
-#tmux_conf_theme_colour_17="colour15"
+# Gruvbox Dark theme
+tmux_conf_theme_colour_1="#282828"    # bg (dark)
+tmux_conf_theme_colour_2="#504945"    # bg2
+tmux_conf_theme_colour_3="#a89984"    # fg4 (muted text)
+tmux_conf_theme_colour_4="#83a598"    # blue
+tmux_conf_theme_colour_5="#fabd2f"    # yellow
+tmux_conf_theme_colour_6="#282828"    # bg
+tmux_conf_theme_colour_7="#ebdbb2"    # fg (light text)
+tmux_conf_theme_colour_8="#282828"    # bg
+tmux_conf_theme_colour_9="#fabd2f"    # yellow (status left 1)
+tmux_conf_theme_colour_10="#d65d0e"   # orange (status left 2)
+tmux_conf_theme_colour_11="#98971a"   # green  (status left 3)
+tmux_conf_theme_colour_12="#a89984"   # fg4 (status right 1 fg)
+tmux_conf_theme_colour_13="#ebdbb2"   # fg  (status right 2 fg)
+tmux_conf_theme_colour_14="#282828"   # bg  (status right 3 fg)
+tmux_conf_theme_colour_15="#282828"   # bg  (status right 1 bg)
+tmux_conf_theme_colour_16="#cc241d"   # red (status right 2 bg)
+tmux_conf_theme_colour_17="#a89984"   # fg4 (status right 3 bg)
 
 # window style
 tmux_conf_theme_window_fg="default"
@@ -235,7 +216,7 @@ tmux_conf_theme_right_separator_sub='\uE0B3'  #   PowerlineSymbols.otf font, see
 #     - #{uptime_s}
 #     - #{username}
 #     - #{username_ssh}
-tmux_conf_theme_status_left=" ❐ #S | ↑#{?uptime_y, #{uptime_y}y,}#{?uptime_d, #{uptime_d}d,}#{?uptime_h, #{uptime_h}h,}#{?uptime_m, #{uptime_m}m,} "
+tmux_conf_theme_status_left=" ❐ #S | #{?#{==:#{pane_current_path},#{HOME}},~,#{b:pane_current_path}} "
 tmux_conf_theme_status_right=" #{prefix}#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},} , %R , %d %b | #{username}#{root} | #{hostname} "
 
 # status left style
@@ -335,8 +316,10 @@ tmux_conf_copy_to_os_clipboard=false
 
 # -- user customizations -------------------------------------------------------
 
-set -g history-limit 10000
+set -g history-limit 50000
 set -g mouse on
+set -sg escape-time 10
+set -g focus-events on
 
 # Use the default shell detected at runtime
 set-option -g default-shell "{{ lookPath "zsh" | default (lookPath "bash") | default "/bin/sh" }}"
@@ -373,6 +356,10 @@ tmux_conf_uninstall_plugins_on_reload=true
 
 # Plugins
 set -g @plugin 'tmux-plugins/tmux-yank'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @continuum-restore 'on'
+set -g @continuum-save-interval '15'
 
 # tmux-yank: use OSC 52 for clipboard (works over SSH, no xclip needed)
 set -g @yank_action 'copy-pipe-no-clear'
