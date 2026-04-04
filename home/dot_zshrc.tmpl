@@ -135,11 +135,13 @@ source $ZSH/oh-my-zsh.sh
 
 # Sourcing fzf directly may be faster. 
 # ~/.oh-my-zsh/custom/fzf-setup.zsh
-if [[ ! -f ~/.fzf.zsh || ~/.fzf.zsh -ot $(command -v fzf) ]]; then
-  fzf --zsh > ~/.fzf.zsh
+_fzf_cache="$XDG_CACHE_HOME/fzf/fzf.zsh"
+if [[ ! -f "$_fzf_cache" || "$_fzf_cache" -ot =fzf ]]; then
+  mkdir -p "${_fzf_cache:h}"
+  fzf --zsh > "$_fzf_cache"
 fi
-
-source ~/.fzf.zsh
+source "$_fzf_cache"
+unset _fzf_cache
 
 # Async mode can break custom autosuggest strategies in some setups; keep suggestions synchronous.
 unset ZSH_AUTOSUGGEST_USE_ASYNC
