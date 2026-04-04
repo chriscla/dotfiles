@@ -34,7 +34,7 @@
 {{-       else -}}
 {{-         $personal = true -}}
 {{-       end -}}
-{{-       $trusted = true -}}
+{{-       $trusted = promptBoolOnce . "trusted" "trusted (deploy secrets/keys)" -}}
 {{-     end -}}
 {{-   else -}}
 {{-     $ephemeral = true -}}
