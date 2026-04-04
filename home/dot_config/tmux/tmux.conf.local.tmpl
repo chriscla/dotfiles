@@ -334,77 +334,50 @@ tmux_conf_copy_to_os_clipboard=false
 
 
 # -- user customizations -------------------------------------------------------
-# this is the place to override or undo settings
 
-# increase history size
 set -g history-limit 10000
-
-# start with mouse mode enabled
 set -g mouse on
 
-# force Vi mode
-#   really you should export VISUAL or EDITOR environment variable, see manual
-#set -g status-keys vi
-#set -g mode-keys vi
+# Use the default shell detected at runtime
+set-option -g default-shell "{{ lookPath "zsh" | default (lookPath "bash") | default "/bin/sh" }}"
+set-environment -g 'SSH_AUTH_SOCK' $HOME/.ssh/ssh_auth_sock
 
-# replace C-b by C-a instead of using both prefixes
-# set -gu prefix2
-# unbind C-a
-# unbind C-b
-# set -g prefix C-a
-# bind C-a send-prefix
+# -- nested tmux (local C-a, remote C-b) --------------------------------------
+# Local uses C-a as prefix. When SSH'd into a remote tmux, press F12 to toggle:
+#   F12 = disable local prefix (pass keys to remote tmux)
+#   F12 again = re-enable local prefix
+set -g prefix C-a
+unbind C-b
+bind C-a send-prefix
 
-# if you don't want Oh my tmux! to alter a binding, use #!important
-# bind v new-window -c #{pane_current_path} #!important
+# Toggle local/remote: F12 disables local keys so remote tmux gets them
+bind -T root F12 \
+  set prefix None \;\
+  set key-table off \;\
+  set status-style "fg=$tmux_conf_theme_colour_3,bg=$tmux_conf_theme_colour_2" \;\
+  if -F '#{pane_in_mode}' 'send-keys -X cancel' \;\
+  refresh-client -S
 
-# move status line to top
-#set -g status-position top
+bind -T off F12 \
+  set -u prefix \;\
+  set -u key-table \;\
+  set -u status-style \;\
+  refresh-client -S
 
 
 # -- tpm -----------------------------------------------------------------------
 
-# while I don't use tpm myself, many people requested official support so here
-# is a seamless integration that automatically installs plugins in parallel
-
-# whenever a plugin introduces a variable to be used in 'status-left' or
-# 'status-right', you can use it in 'tmux_conf_theme_status_left' and
-# 'tmux_conf_theme_status_right' variables.
-
-# by default, launching tmux will update tpm and all plugins
-#   - true (default)
-#   - false
 tmux_conf_update_plugins_on_launch=true
-
-# by default, reloading the configuration will update tpm and all plugins
-#   - true (default)
-#   - false
 tmux_conf_update_plugins_on_reload=true
-
-# by default, reloading the configuration will uninstall tpm and plugins when no
-# plugins are enabled
-#   - true (default)
-#   - false
 tmux_conf_uninstall_plugins_on_reload=true
 
-# /!\ the tpm bindings differ slightly from upstream:
-#   - installing plugins: <prefix> + I
-#   - uninstalling plugins: <prefix> + Alt + u
-#   - updating plugins: <prefix> + u
+# Plugins
+set -g @plugin 'tmux-plugins/tmux-yank'
 
-# /!\ do not add set -g @plugin 'tmux-plugins/tpm'
-# /!\ do not add run '~/.tmux/plugins/tpm/tpm'
-
-# to enable a plugin, use the 'set -g @plugin' syntax:
-# visit https://github.com/tmux-plugins for available plugins
-#set -g @plugin 'tmux-plugins/tmux-copycat'
-#set -g @plugin 'tmux-plugins/tmux-cpu'
-#set -g @plugin 'tmux-plugins/tmux-resurrect'
-#set -g @plugin 'tmux-plugins/tmux-continuum'
-#set -g @continuum-restore 'on'
-
-set-option -g default-command "~/.dotfile_extras/safe-reattach-to-user-namespace.sh -l zsh"
-set-option -g default-shell /usr/bin/zsh
-set-environment -g 'SSH_AUTH_SOCK' $HOME/.ssh/ssh_auth_sock
+# tmux-yank: use OSC 52 for clipboard (works over SSH, no xclip needed)
+set -g @yank_action 'copy-pipe-no-clear'
+set -g @override_copy_command 'true'
+set -s set-clipboard on
 # -- custom variables ----------------------------------------------------------
 
 # to define a custom #{foo} variable, define a POSIX shell function between the
