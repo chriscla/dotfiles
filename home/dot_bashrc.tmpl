@@ -1,0 +1,43 @@
+# Minimal bashrc for ephemeral/container environments
+
+# XDG Base Directories
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_STATE_HOME=$HOME/.local/state
+export XDG_CACHE_HOME=$HOME/.cache
+
+# Editor: prefer nvim > vim > vi
+if command -v nvim &>/dev/null; then
+  export VISUAL=nvim
+elif command -v vim &>/dev/null; then
+  export VISUAL=vim
+else
+  export VISUAL=vi
+fi
+export EDITOR="$VISUAL"
+alias vim="$VISUAL"
+alias vi="$VISUAL"
+
+# XDG-compliant history/config locations
+export LESSHISTFILE="$XDG_STATE_HOME/less/history"
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+
+{{- if .work }}
+export AWS_CONFIG_FILE="$XDG_CONFIG_HOME/aws/config"
+export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME/aws/credentials"
+export AWS_CLI_HISTORY_FILE="$XDG_DATA_HOME/aws/history"
+{{- end }}
+
+export LANG=en_US.UTF-8
+
+# PATH
+PATH="$HOME/bin:$HOME/.local/bin:/usr/local/go/bin:$PATH"
+export PATH
+
+# Aliases
+alias ll='ls -lh'
+alias la='ls -lAh'
+alias l='ls -lah'
+
+# Prompt: user@host:dir$
+PS1='\u@\h:\w\$ '

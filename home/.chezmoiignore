@@ -38,6 +38,18 @@ scoop.json
 .zshrc
 {{ end }}
 
+{{ if lookPath "zsh" }}
+.bashrc
+{{ else }}
+# No zsh: skip zsh/OMZ, use minimal bashrc only
+.zshrc
+.zshenv
+.zprofile
+.oh-my-zsh
+.oh-my-zsh/**
+.config/starship.toml
+{{ end }}
+
 {{ if ne .chezmoi.os "darwin" }}
 Library/
 {{ end }}
