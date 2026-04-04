@@ -50,6 +50,6 @@ if OS.linux?
     brew "gcc" 
 end
 
-{{- if not .ephemeral }}
+{{- if .trusted }}
 brew "gh"
 {{- end }}
