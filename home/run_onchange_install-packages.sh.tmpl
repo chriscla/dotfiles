@@ -30,7 +30,8 @@ if ! command -v brew &> /dev/null || [ "$(id -u)" -eq 0 ]; then
 fi
 
 echo "📦 Installing packages from Brewfile..."
-chezmoi execute-template < "{{ joinPath .chezmoi.sourceDir "dot_config/brew/Brewfile.tmpl" }}" | \
+CHEZMOI="{{ .chezmoi.executable }}"
+"$CHEZMOI" execute-template < "{{ joinPath .chezmoi.sourceDir "dot_config/brew/Brewfile.tmpl" }}" | \
     brew bundle --file=/dev/stdin
 
 echo "✅ Package installation complete!"
