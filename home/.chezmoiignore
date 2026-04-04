@@ -43,6 +43,7 @@ Library/
 
 {{ if not .work }}
 .config/finicky/finicky.js
+.config/aws/config
 {{ end }}
 
 {{ if not .trusted }}

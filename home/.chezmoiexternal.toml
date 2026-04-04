@@ -70,6 +70,15 @@
     stripComponents = 1
     refreshPeriod = "168h"
     exclude = ["*.md", ".gitignore", ".github/**"]
+{{ if .work }}
+[".oh-my-zsh/custom/plugins/zsh-aws-vault"]
+    type = "archive"
+    url = "https://github.com/blimmer/zsh-aws-vault/archive/master.tar.gz"
+    exact = true
+    stripComponents = 1
+    refreshPeriod = "168h"
+    exclude = ["*.md", ".gitignore", ".github/**"]
+{{ end }}
 {{ end -}}
 {{ if eq .chezmoi.os "darwin" }}
 [".dotfile_extras/terminal_themes/schemes"]

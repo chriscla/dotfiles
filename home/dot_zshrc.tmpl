@@ -1,3 +1,6 @@
+if [ -n "${ZSH_DEBUGRC+1}" ]; then
+    zmodload zsh/zprof
+fi
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export XDG_DATA_HOME=$HOME/.local/share
@@ -17,6 +20,13 @@ export PSQL_HISTORY="$XDG_STATE_HOME/psql/history"
 # Docker
 export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 
+{{- if .work }}
+# AWS: keep config and credentials under XDG (~/.config/aws managed by chezmoi on work machines)
+export AWS_CONFIG_FILE="$XDG_CONFIG_HOME/aws/config"
+export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME/aws/credentials"
+export AWS_CLI_HISTORY_FILE="$XDG_DATA_HOME/aws/history"
+{{- end }}
+
 export LESSHISTFILE="$XDG_STATE_HOME/less/history"
 
 SPACESHIP_PROMPT_ASYNC=true
@@ -27,11 +37,12 @@ SPACESHIP_PROMPT_ORDER=(
     host
     user
     dir
+{{- if .work }}
+    aws
+{{- end }}
     git
-    venv
     uv
     node
-    docker_compose
     line_sep
     sudo
     char
@@ -52,62 +63,39 @@ ZSH_THEME="spaceship/spaceship"
 # Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
-# Uncomment one of the following lines to change the auto-update behavior
 zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
+#
+
+# ZSH Autosuggestion speedup
+ZSH_AUTOSUGGEST_USE_ASYNC=1
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(z chezmoi brew colorize uv git python tmux ssh-agent nvm fzf fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(
+  z
+  chezmoi
+{{ if .work }}
+  zsh-aws-vault
+{{ end }}
+  colorize
+  uv
+  git
+  tmux
+  ssh-agent
+  fzf-tab
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+)
 
 # Loads keys only on first-use
 zstyle ':omz:plugins:ssh-agent' lazy yes
-zstyle ':omz:plugins:nvm' lazy yes
 
-# Auto read .nvmrc files when changing directories
-#
-zstyle ':omz:plugins:nvm' autoload yes
 # Enable agent-forwarding
 zstyle ':omz:plugins:ssh-agent' agent-forwarding yes
 
@@ -128,8 +116,8 @@ export PROJECT_HOME=$HOME/code
 DISABLE_AUTO_UPDATE="true"
 
 # Speedup loading
-DISABLE_MAGIC_FUNCTIONS="true"
-DISABLE_COMPFIX="true"
+ZSH_DISABLE_MAGIC_FUNCTIONS=true
+ZSH_DISABLE_COMPFIX=true
 
 # zsh-autosuggestions: suppress gray history hints for `z` / `z …` (must be set before the plugin loads).
 _zsh_autosuggest_strategy_skip_z_jump() {
@@ -144,6 +132,14 @@ typeset -ga ZSH_AUTOSUGGEST_STRATEGY
 ZSH_AUTOSUGGEST_STRATEGY=(skip_z_jump history)
 
 source $ZSH/oh-my-zsh.sh
+
+# Sourcing fzf directly may be faster. 
+# ~/.oh-my-zsh/custom/fzf-setup.zsh
+if [[ ! -f ~/.fzf.zsh || ~/.fzf.zsh -ot $(command -v fzf) ]]; then
+  fzf --zsh > ~/.fzf.zsh
+fi
+
+source ~/.fzf.zsh
 
 # Async mode can break custom autosuggest strategies in some setups; keep suggestions synchronous.
 unset ZSH_AUTOSUGGEST_USE_ASYNC
@@ -190,6 +186,7 @@ alias smurf='ssh ansible@murf.at2311.com'
 alias vim="nvim"
 alias vi="nvim"
 alias nvim-update='nvim --headless "+Lazy! sync" +qa && chezmoi add ~/.config/nvim/lazy-lock.json'
+alias zsh_zprof='time ZSH_DEBUGRC=1 zsh -i -c exit'
 
 envrun() {
   if [ -f .env ]; then
@@ -227,3 +224,7 @@ zstyle ':fzf-tab:*' fzf-flags --select-1
 # Quieter group headers — avoids extra leading text in the fzf UI in some themes/list-colors setups.
 # Use `show-group full` if you want colored group labels back.
 zstyle ':fzf-tab:*' show-group quiet
+
+if [ -n "${ZSH_DEBUGRC+1}" ]; then
+    zprof
+fi

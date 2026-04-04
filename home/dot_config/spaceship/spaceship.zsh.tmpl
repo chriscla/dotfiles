@@ -14,5 +14,12 @@ SPACESHIP_VENV_PREFIX=venv:
 # spaceship add ember
 #
 # # Add a custom vi-mode section to the prompt
-# # See: https://github.com/spaceship-prompt/spaceship-vi-mode
+# # See: https://spaceship-prompt/spaceship-vi-mode
 # spaceship add --before char vi_mode
+
+{{- if .work }}
+# AWS (https://spaceship-prompt.sh/sections/aws/) — profile from AWS_VAULT or AWS_PROFILE
+SPACESHIP_AWS_PREFIX='on '
+SPACESHIP_AWS_SYMBOL='🅰 '
+SPACESHIP_AWS_COLOR=blue
+{{- end }}
