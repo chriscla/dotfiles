@@ -1,5 +1,9 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
+  -- Skip bootstrap if running as manpager or git is unavailable
+  if vim.fn.executable("git") ~= 1 then
+    return
+  end
   local out = vim.fn.system({
     "git", "clone", "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath,
