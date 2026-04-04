@@ -3,6 +3,12 @@
 set -euo pipefail
 
 {{ if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") -}}
+{{ if .chezmoi.kernel -}}
+{{   if contains "microsoft" (lower .chezmoi.kernel.osrelease) -}}
+# WSL2: editors live on the Windows host; use the PowerShell script instead.
+exit 0
+{{   end -}}
+{{ end -}}
 
 # Cursor: Anysphere marketplace IDs where applicable.
 EXTENSIONS_CURSOR=(
