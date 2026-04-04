@@ -1,8 +1,17 @@
 skip_global_compinit=1
 
-# - Exports
+# XDG Base Directories
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_STATE_HOME=$HOME/.local/state
+export XDG_CACHE_HOME=$HOME/.cache
 
-export ZSH=$HOME/.oh-my-zsh
+# Default programs
 export VISUAL=nvim
 export EDITOR="$VISUAL"
+
+# Oh My Zsh
+export ZSH=$HOME/.oh-my-zsh
+
+# PATH
 export PATH="/usr/local/sbin:$PATH"

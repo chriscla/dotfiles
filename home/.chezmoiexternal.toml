@@ -6,14 +6,6 @@
     stripComponents = 1
     refreshPeriod = "168h"
     exclude = ["*/.*", "*/templates", "*/themes"]
-[".oh-my-zsh/custom/plugins/zsh-autocomplete"]
-    type = "archive"
-    #url = "https://github.com/marlonrichert/zsh-autocomplete/archive/d8bfbef46efc54c1189010a3b70d501b44487504.tar.gz"
-    url = "https://github.com/marlonrichert/zsh-autocomplete/archive/master.tar.gz"
-    exact = true
-    stripComponents = 1
-    refreshPeriod = "168h"
-    exclude = ["*.md", ".gitignore", ".github/**", "*/.editorconfig"]
 [".oh-my-zsh/custom/plugins/zsh-autosuggestions"]
     type = "archive"
     url = "https://github.com/zsh-users/zsh-autosuggestions/archive/master.tar.gz"
@@ -45,10 +37,7 @@
 [".vim/basic.vim"]
     type = "file"
     url = "https://raw.githubusercontent.com/amix/vimrc/master/vimrcs/basic.vim"
-    exact = true
-    stripComponents = 1
     refreshPeriod = "168h"
-    exclude = ["*.md", ".gitignore", ".github/**"]
 [".vim/pack/plugins/start/gruvbox"]
     type = "archive"
     url = "https://github.com/morhetz/gruvbox/archive/master.tar.gz"

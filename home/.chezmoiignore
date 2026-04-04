@@ -7,7 +7,8 @@
 .oh-my-zsh/cache/**
 .oh-my-zsh/plugins/**
 .oh-my-zsh/templates/**
-.oh-my-zsh/custom/themes/spaceship/**/*.zwc
+# Compiled zsh files in custom themes
+.oh-my-zsh/custom/themes/**/*.zwc
 
 # ignore on non-Windows Machines (Linux and Mac)
 {{ if ne .chezmoi.os "windows" }}

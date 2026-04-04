@@ -1,63 +1,32 @@
 if [ -n "${ZSH_DEBUGRC+1}" ]; then
     zmodload zsh/zprof
 fi
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-export XDG_DATA_HOME=$HOME/.local/share
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_STATE_HOME=$HOME/.local/state
-export XDG_CACHE_HOME=$HOME/.cache
 
-# TODO: Set this better based on what type of session we're in
 export COLORTERM="truecolor"
 
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-
-# PostgreSQL
+# XDG-compliant history/config locations
 export PSQL_HISTORY="$XDG_STATE_HOME/psql/history"
-
-# Docker
 export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+export LESSHISTFILE="$XDG_STATE_HOME/less/history"
 
 {{- if .work }}
-# AWS: keep config and credentials under XDG (~/.config/aws managed by chezmoi on work machines)
+# AWS: keep config and credentials under XDG
 export AWS_CONFIG_FILE="$XDG_CONFIG_HOME/aws/config"
 export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME/aws/credentials"
 export AWS_CLI_HISTORY_FILE="$XDG_DATA_HOME/aws/history"
 {{- end }}
 
-export LESSHISTFILE="$XDG_STATE_HOME/less/history"
+# --- Oh My Zsh configuration (must be set before sourcing) ---
 
 ZSH_THEME=""
+zstyle ':omz:update' mode disabled
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-zstyle ':omz:update' mode disabled  # disable automatic updates
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-#
-
-# ZSH Autosuggestion speedup
-ZSH_AUTOSUGGEST_USE_ASYNC=1
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
 plugins=(
   z
   chezmoi
-{{ if .work }}
+{{- if .work }}
   zsh-aws-vault
-{{ end }}
+{{- end }}
   colorize
   uv
   git
@@ -68,33 +37,28 @@ plugins=(
   zsh-syntax-highlighting
 )
 
-# Loads keys only on first-use
 zstyle ':omz:plugins:ssh-agent' lazy yes
-
-# Enable agent-forwarding
 zstyle ':omz:plugins:ssh-agent' agent-forwarding yes
-
-# Tab to the most common completion
 zstyle ':autocomplete:*' insert-unambiguous yes
 
-# TMUX Config
 ZSH_TMUX_AUTOSTART=false
-ZSH_TMUX_ITERM2=true # Sets -CC option for iterm2 tmux integration
+{{- if eq .chezmoi.os "darwin" }}
+ZSH_TMUX_ITERM2=true
+{{- end }}
 
-#VirtualEnvWrapper
+# VirtualEnvWrapper
 export WORKON_HOME=$HOME/.venvs
 export VIRTUALENVWRAPPER_PYTHON=$WORKON_HOME/venvwrapper_venv/bin/python3
 export VIRTUALENVWRAPPER_VIRTUALENV=$WORKON_HOME/venvwrapper_venv/bin/virtualenv
 export PROJECT_HOME=$HOME/code
 
-# Disable Auto-update with chezmoi
-DISABLE_AUTO_UPDATE="true"
-
-# Speedup loading
+# Performance tweaks
 ZSH_DISABLE_MAGIC_FUNCTIONS=true
 ZSH_DISABLE_COMPFIX=true
 
-# zsh-autosuggestions: suppress gray history hints for `z` / `z …` (must be set before the plugin loads).
+# zsh-autosuggestions: suppress gray history hints for `z` / `z ...`
+# Must be defined before the plugin loads; async mode is left off because it
+# can break custom strategies.
 _zsh_autosuggest_strategy_skip_z_jump() {
   emulate -L zsh
   if [[ "$1" == z ]] || [[ "$1" == z[[:space:]]* ]]; then
@@ -108,8 +72,7 @@ ZSH_AUTOSUGGEST_STRATEGY=(skip_z_jump history)
 
 source $ZSH/oh-my-zsh.sh
 
-# Sourcing fzf directly may be faster. 
-# ~/.oh-my-zsh/custom/fzf-setup.zsh
+# Source fzf keybindings/completions (cached for speed)
 _fzf_cache="$XDG_CACHE_HOME/fzf/fzf.zsh"
 if [[ ! -f "$_fzf_cache" || "$_fzf_cache" -ot =fzf ]]; then
   mkdir -p "${_fzf_cache:h}"
@@ -118,28 +81,9 @@ fi
 source "$_fzf_cache"
 unset _fzf_cache
 
-# Async mode can break custom autosuggest strategies in some setups; keep suggestions synchronous.
-unset ZSH_AUTOSUGGEST_USE_ASYNC
-
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
 export LANG=en_US.UTF-8
-
-#Preferred editor for local and remote sessions
-#if [[ -n $SSH_CONNECTION ]]; then
-export VISUAL='nvim'
-export EDITOR="$VISUAL"
 export MANPAGER="nvim +Man!"
-# else
-#   export EDITOR='mvim'
-# fi
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-#
 path+=("$HOME/bin")
 path+=("$HOME/.local/bin")
 path+=("/usr/local/go/bin")
@@ -147,13 +91,7 @@ path+=("$HOME/.dotnet/tools")
 path+=("/usr/local/opt/libpq/bin")
 export PATH
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
+# Aliases
 alias dcp="docker compose -f ~/docker-compose.yml"
 alias dce='() { dcp exec -it $1 /bin/bash ;}'
 alias dcr='dcp run --rm'

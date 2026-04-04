@@ -58,4 +58,31 @@ Git identity (name, work email, personal email) is stored **only** in the encryp
 
 ### External Dependencies
 
-`home/.chezmoiexternal.toml` pulls archives/files from GitHub: Oh My Zsh, zsh plugins (autosuggestions, syntax-highlighting, fzf-tab), oh-my-tmux, spaceship prompt, vim plugins, and iTerm2 color schemes (macOS only).
+`home/.chezmoiexternal.toml` pulls archives/files from GitHub: Oh My Zsh, zsh plugins (autosuggestions, syntax-highlighting, fzf-tab), oh-my-tmux, vim plugins, and iTerm2 color schemes (macOS only).
+
+### Prompt
+
+**Starship** (Rust-based, installed via Homebrew). Config in `home/dot_config/starship.toml.tmpl`. Init is cached at `$XDG_CACHE_HOME/starship/init.zsh` for speed.
+
+### WSL2
+
+Detected via `{{ contains "microsoft" (lower .chezmoi.kernel.osrelease) }}`. On WSL2:
+- VS Code/Cursor extension scripts exit early (editors live on Windows host)
+- Binaries under `/mnt/c/` are Windows-side — don't install into them from WSL2
+
+### Zsh Performance
+
+Warm startup target: **~80ms**. Key watchouts:
+- **OMZ has no `.git` dir** (installed via archive, not git clone) — `git rev-parse HEAD` returns empty. This is normal; the empty `#omz revision:` fingerprint must stay consistent.
+- **Never stub `compaudit`** — it causes zcompdump cache invalidation and ~250ms rebuild penalty every launch
+- **zcompdump fpath fingerprint** — if fpath changes between launches, OMZ deletes and rebuilds the dump. Test with: `chezmoi apply && rm -f ~/.zcompdump* && zsh -i -c exit && time ZSH_DEBUGRC=1 zsh -i -c exit`
+- **`dot_zshenv`** owns env vars (`XDG_*`, `EDITOR`, `VISUAL`, `ZSH`, `PATH`); `dot_zshrc.tmpl` owns interactive config only
+- Fzf and Starship inits are cached under `$XDG_CACHE_HOME` with `-ot =binary` freshness checks
+
+## Useful Debug Commands
+
+```sh
+time ZSH_DEBUGRC=1 zsh -i -c exit   # Profile zsh startup (zprof)
+chezmoi execute-template < file.tmpl  # Render a template without applying
+chezmoi data --format json            # Inspect all template data as JSON
+```
