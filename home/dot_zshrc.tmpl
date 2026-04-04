@@ -102,6 +102,17 @@ alias dce='() { dcp exec -it $1 /bin/bash ;}'
 alias dcr='dcp run --rm'
 alias appdata="cd /opt/appdata"
 alias chownmedia='() { sudo chown -R media:media $1;sudo chmod -R g+rws,o+r $1 ;}'
+# SSH wrapper: tint tmux pane background to indicate remote session
+ssh() {
+  if [[ -n "$TMUX" ]]; then
+    tmux select-pane -P 'bg=#1d2021'
+    command ssh "$@"
+    tmux select-pane -P 'bg=default'
+  else
+    command ssh "$@"
+  fi
+}
+
 alias smurf='ssh ansible@murf.at2311.com'
 alias vim="nvim"
 alias vi="nvim"
