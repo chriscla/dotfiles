@@ -320,8 +320,8 @@ set -g history-limit 50000
 set -g mouse on
 set -sg escape-time 10
 set -g focus-events on
-set -g allow-passthrough on
-set -ga terminal-overrides ',*:Tc'
+set -as terminal-features ",xterm-256color:RGB"
+set -as terminal-overrides ",xterm-256color:Ms=\\E]52;%p1%s;%p2%s\\7"
 set -gq utf8 on
 set -gq status-utf8 on
 
