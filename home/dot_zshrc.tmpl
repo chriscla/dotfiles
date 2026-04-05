@@ -153,6 +153,9 @@ z() {
 # zsh completion instead of a misleading fzf menu.
 zstyle ':fzf-tab:complete:z:*' disabled-on any
 
+# SSH completion: only use ~/.ssh/config hosts, not known_hosts
+zstyle ':completion:*:(ssh|scp|rsync):*' known-hosts-files /dev/null
+
 # fzf-tab: if only one match, accept it immediately (no pointless one-row fzf UI).
 zstyle ':fzf-tab:*' fzf-flags --select-1
 # Quieter group headers — avoids extra leading text in the fzf UI in some themes/list-colors setups.
