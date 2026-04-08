@@ -3,15 +3,15 @@
 
 $ErrorActionPreference = "Stop"
 
-Write-Output "🚀 Starting Windows package installation via Scoop..."
+Write-Output "Starting Windows package installation via Scoop..."
 
 # 1. Install Scoop if not present
 if (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
-    Write-Output "🍦 Scoop not found. Installing..."
+    Write-Output "Scoop not found. Installing..."
     Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
     irm get.scoop.sh | iex
 } else {
-    Write-Output "✅ Scoop is already installed."
+    Write-Output "Scoop is already installed."
 }
 
 # 2. Add buckets from scoop.json
@@ -23,7 +23,7 @@ if (Test-Path $scoopConfigFile) {
     
     # Handle Buckets
     if ($json.buckets) {
-        Write-Output "🪣 Adding buckets..."
+        Write-Output "Adding buckets..."
         foreach ($bucket in $json.buckets) {
             $bucketName = $bucket.Name
             # Check if bucket exists
@@ -37,7 +37,7 @@ if (Test-Path $scoopConfigFile) {
 
     # Handle Apps
     if ($json.apps) {
-        Write-Output "📦 Installing apps..."
+        Write-Output "Installing apps..."
         foreach ($app in $json.apps) {
             $appName = $app.Name
             # Check if app is installed
@@ -51,8 +51,8 @@ if (Test-Path $scoopConfigFile) {
         }
     }
 } else {
-    Write-Warning "⚠️  scoop.json not found at $scoopConfigFile"
+    Write-Warning "scoop.json not found at $scoopConfigFile"
 }
 
-Write-Output "🎉 Windows package installation complete!"
+Write-Output "Windows package installation complete!"
 {{ end -}}
