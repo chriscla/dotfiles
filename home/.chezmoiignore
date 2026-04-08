@@ -18,6 +18,7 @@ scoop/
 scoop.json
 *.ps1
 {{ else }} # Ignore on Windows
+decrypt-private-key.sh
 .bash_aliases
 .config/ghostty
 .config/git/cookies

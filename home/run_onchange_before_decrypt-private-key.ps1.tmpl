@@ -1,0 +1,13 @@
+{{ if and (eq .chezmoi.os "windows") .trusted -}}
+$ErrorActionPreference = "Stop"
+
+$keyDir = Join-Path $HOME ".config\chezmoi"
+$keyPath = Join-Path $keyDir "key.txt"
+
+if (-not (Test-Path $keyPath)) {
+    if (-not (Test-Path $keyDir)) {
+        New-Item -ItemType Directory -Path $keyDir -Force | Out-Null
+    }
+    & chezmoi age decrypt --output $keyPath --passphrase "{{ .chezmoi.sourceDir }}\key.txt.age"
+}
+{{- end }}
