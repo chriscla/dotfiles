@@ -13,5 +13,9 @@ export EDITOR="$VISUAL"
 # Oh My Zsh
 export ZSH=$HOME/.oh-my-zsh
 
+# Rust (XDG-compliant locations)
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+
 # PATH
-export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/sbin:$CARGO_HOME/bin:$PATH"

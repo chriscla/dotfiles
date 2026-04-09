@@ -103,6 +103,7 @@ alias dcp="docker compose -f /opt/docker/docker-compose.yml"
 alias dce='() { dcp exec -it $1 /bin/bash ;}'
 alias dcr='dcp run --rm'
 alias dcpe='${EDITOR:-vim} /opt/docker/docker-compose.yml'
+alias install-rust="curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path -y"
 alias appdata="cd /opt/appdata"
 alias chownmedia='() { sudo chown -R media:media $1;sudo chmod -R g+rws,o+r $1 ;}'
 # SSH wrapper: tint tmux pane background to indicate remote session
