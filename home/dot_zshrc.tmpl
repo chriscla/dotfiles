@@ -96,6 +96,8 @@ path+=("$HOME/.local/bin")
 path+=("/usr/local/go/bin")
 path+=("$HOME/.dotnet/tools")
 path+=("/usr/local/opt/libpq/bin")
+# Rust (only if installed on this machine)
+[[ -d "$CARGO_HOME/bin" ]] && path+=("$CARGO_HOME/bin")
 export PATH
 
 # Aliases
