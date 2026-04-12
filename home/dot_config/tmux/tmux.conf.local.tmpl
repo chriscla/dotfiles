@@ -328,6 +328,7 @@ set -gq status-utf8 on
 # Use the default shell detected at runtime
 set-option -g default-shell "{{ lookPath "zsh" | default (lookPath "bash") | default "/bin/sh" }}"
 set-environment -g 'SSH_AUTH_SOCK' $HOME/.ssh/ssh_auth_sock
+set -g update-environment "DISPLAY SSH_AUTH_SOCK SSH_CONNECTION SSH_CLIENT WINDOWID XAUTHORITY"
 
 # -- nested tmux (local C-a, remote C-b) --------------------------------------
 # Local uses C-a as prefix. When SSH'd into a remote tmux, press F12 to toggle:

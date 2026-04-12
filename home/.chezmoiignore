@@ -49,14 +49,13 @@ Library/
 {{ end }}
 
 {{ if not .trusted }}
-# Not a trusted machine
-.ssh/**
+# Not a trusted machine: skip private keys and encrypted files.
+# .ssh/rc, .ssh/config, and .ssh/*.pub contain no secrets so they still deploy.
+.ssh/id_ed25519
+.ssh/id_holiest
+.ssh/ansible_rsa
 **/*.age
 {{ end }}
-# Always include the config file and public keys
-!.ssh/rc
-!.ssh/config
-!.ssh/*.pub
 
 # Encrypted JSON used only via template `include` in dot_gitconfig.tmpl (do not install plaintext to ~/.config).
 .config/chezmoi/git-identity.json
