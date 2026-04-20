@@ -56,6 +56,9 @@ fi
 {{- if eq .chezmoi.os "darwin" }}
 ZSH_TMUX_ITERM2=true
 {{- end }}
+# Force tmux -u on attach so multibyte/powerline glyphs render regardless of
+# which SSH client set the locale when the server was first started.
+ZSH_TMUX_UNICODE=true
 
 # VirtualEnvWrapper
 export WORKON_HOME=$HOME/.venvs
@@ -130,6 +133,14 @@ alias vim="nvim"
 alias vi="nvim"
 alias nvim-update='nvim --headless "+Lazy! sync" +qa && chezmoi add ~/.config/nvim/lazy-lock.json'
 alias zsh_zprof='time ZSH_DEBUGRC=1 zsh -i -c exit'
+# Fully restart tmux: drop continuum's restore target so a stale session can't
+# resurrect, then kill the server. Reattach in a fresh shell to pick up -u.
+tmux_reset() {
+  rm -f "${XDG_DATA_HOME:-$HOME/.local/share}/tmux/resurrect/last" \
+        "$HOME/.tmux/resurrect/last"
+  tmux kill-server 2>/dev/null
+  echo "tmux server killed. Start a new session with: tmux"
+}
 
 envrun() {
   if [ -f .env ]; then
