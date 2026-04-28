@@ -1,0 +1,29 @@
+#!/bin/bash
+# ccstatusline v2.2.12
+# integrity: sha512-vnwvzi9NT7WA2g9aFs3gI40X9xZvBTyqmQlrFfX2Jd9r7UNL9mu1NV9/t/OOrGZDl5W1DdMKzqFybLjEqQ1KJg==
+{{ if and (not .ephemeral) (not (eq .chezmoi.os "windows")) -}}
+
+set -euo pipefail
+
+CCSTATUSLINE_VERSION="2.2.12"
+CCSTATUSLINE_URL="https://registry.npmjs.org/ccstatusline/-/ccstatusline-${CCSTATUSLINE_VERSION}.tgz"
+EXPECTED_HASH="vnwvzi9NT7WA2g9aFs3gI40X9xZvBTyqmQlrFfX2Jd9r7UNL9mu1NV9/t/OOrGZDl5W1DdMKzqFybLjEqQ1KJg=="
+
+tmpdir=$(mktemp -d)
+trap 'rm -rf "$tmpdir"' EXIT
+tarball="$tmpdir/ccstatusline.tgz"
+
+echo "Installing ccstatusline v${CCSTATUSLINE_VERSION}..."
+curl -fsSL "$CCSTATUSLINE_URL" -o "$tarball"
+
+actual_hash=$(openssl dgst -sha512 -binary < "$tarball" | openssl base64 -A)
+if [ "$actual_hash" != "$EXPECTED_HASH" ]; then
+  echo "ERROR: ccstatusline integrity check failed!" >&2
+  echo "  expected: $EXPECTED_HASH" >&2
+  echo "  actual:   $actual_hash" >&2
+  exit 1
+fi
+
+npm install -g "$tarball"
+echo "ccstatusline v${CCSTATUSLINE_VERSION} installed."
+{{ end -}}

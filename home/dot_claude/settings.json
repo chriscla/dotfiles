@@ -1,0 +1,8 @@
+{
+  "syntaxHighlightingDisabled": false,
+  "skipAutoPermissionPrompt": true,
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/statusline-wrapper.sh"
+  }
+}
