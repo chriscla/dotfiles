@@ -4,7 +4,11 @@
 
 set -eufo pipefail
 
-{{ if and (or (eq .chezmoi.os "linux") (eq .chezmoi.os "darwin")) (not .ephemeral) -}}
+{{ if not (or (eq .chezmoi.os "linux") (eq .chezmoi.os "darwin")) -}}
+echo "⚠️  Skipping package installation on non-Unix OS: {{ .chezmoi.os }}"
+{{ else if .ephemeral -}}
+echo "⏭️  Skipping package installation on ephemeral machine"
+{{ else -}}
 
 echo "🚀 Starting package installation..."
 
@@ -36,6 +40,4 @@ CHEZMOI="{{ .chezmoi.executable }}"
 
 echo "✅ Package installation complete!"
 
-{{ else -}}
-echo "⚠️  Skipping package installation on non-Unix OS: {{ .chezmoi.os }}"
 {{ end -}}
