@@ -85,4 +85,8 @@ Warm startup target: **~80ms**. Key watchouts:
 time ZSH_DEBUGRC=1 zsh -i -c exit   # Profile zsh startup (zprof)
 chezmoi execute-template < file.tmpl  # Render a template without applying
 chezmoi data --format json            # Inspect all template data as JSON
+
+## Development Guidelines
+- Never check in secrets unless they are age encrypted_dot_gitconfig
+- Don't hardcode hostnames
 ```
