@@ -193,6 +193,12 @@ if (( $+commands[starship] )); then
   unset _starship_cache
 fi
 
+{{- if .work }}
+if (( $+commands[agent] )); then
+  eval "$(~/.local/bin/agent shell-integration zsh)"
+fi
+{{- end }}
+
 if [ -n "${ZSH_DEBUGRC+1}" ]; then
     zprof
 fi
