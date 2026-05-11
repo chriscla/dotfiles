@@ -1,0 +1,10 @@
+font-family = "DroidSansM Nerd Font"
+font-family-bold = "DroidSansM Nerd Font"
+font-family-italic = "DroidSansM Nerd Font"
+font-family-bold-italic = "DroidSansM Nerd Font"
+font-size = 14
+font-thicken = true
+
+theme = "Gruvbox Material Dark"
+
+shell-integration-features = ssh-env,ssh-terminfo
