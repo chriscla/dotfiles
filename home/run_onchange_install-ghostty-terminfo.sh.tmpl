@@ -1,0 +1,23 @@
+{{ if (eq .chezmoi.os "darwin") -}}
+#!/bin/bash
+set -eu
+
+GHOSTTY_TERMINFO="/Applications/Ghostty.app/Contents/Resources/terminfo"
+
+# Re-run when the bundled entry changes (e.g. after a Ghostty update).
+# Bundled xterm-ghostty checksum: {{ if (stat "/Applications/Ghostty.app/Contents/Resources/terminfo/78/xterm-ghostty") }}{{ include "/Applications/Ghostty.app/Contents/Resources/terminfo/78/xterm-ghostty" | sha256sum }}{{ else }}absent{{ end }}
+
+if [ ! -d "$GHOSTTY_TERMINFO" ]; then
+    exit 0
+fi
+
+# macOS BSD tic stores aliases as separate files (not symlinks), so a re-run
+# trips "alias multiply defined" unless we clear them first.
+rm -f "$HOME"/.terminfo/*/xterm-ghostty \
+      "$HOME"/.terminfo/*/ghostty \
+      "$HOME"/.terminfo/*/Ghostty
+
+# Compile the bundled xterm-ghostty entry into the user terminfo db so that
+# Ghostty hands shells TERM=xterm-ghostty instead of downgrading to xterm-256color.
+infocmp -x -A "$GHOSTTY_TERMINFO" xterm-ghostty | /usr/bin/tic -x -o "$HOME/.terminfo" -
+{{ end -}}

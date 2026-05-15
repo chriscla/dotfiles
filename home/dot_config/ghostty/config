@@ -5,6 +5,6 @@ font-family-bold-italic = "DroidSansM Nerd Font"
 font-size = 14
 font-thicken = true
 
-theme = "Gruvbox Material Dark"
+theme = "Dracula+"
 
 shell-integration-features = ssh-env,ssh-terminfo
