@@ -195,7 +195,13 @@ fi
 
 {{- if .work }}
 if (( $+commands[agent] )); then
-  eval "$(~/.local/bin/agent shell-integration zsh)"
+  _agent_cache="$XDG_CACHE_HOME/cursor-agent/init.zsh"
+  if [[ ! -f "$_agent_cache" || "$_agent_cache" -ot =agent ]]; then
+    mkdir -p "${_agent_cache:h}"
+    ~/.local/bin/agent shell-integration zsh > "$_agent_cache"
+  fi
+  source "$_agent_cache"
+  unset _agent_cache
 fi
 {{- end }}
 
