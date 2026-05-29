@@ -54,9 +54,7 @@ if [[ -n "$SSH_CONNECTION" ]]; then
 else
   ZSH_TMUX_AUTOSTART=false
 fi
-{{- if eq .chezmoi.os "darwin" }}
-ZSH_TMUX_ITERM2=true
-{{- end }}
+
 # Force tmux -u on attach so multibyte/powerline glyphs render regardless of
 # which SSH client set the locale when the server was first started.
 ZSH_TMUX_UNICODE=true
@@ -192,18 +190,6 @@ if (( $+commands[starship] )); then
   source "$_starship_cache"
   unset _starship_cache
 fi
-
-{{- if .work }}
-if (( $+commands[agent] )); then
-  _agent_cache="$XDG_CACHE_HOME/cursor-agent/init.zsh"
-  if [[ ! -f "$_agent_cache" || "$_agent_cache" -ot =agent ]]; then
-    mkdir -p "${_agent_cache:h}"
-    ~/.local/bin/agent shell-integration zsh > "$_agent_cache"
-  fi
-  source "$_agent_cache"
-  unset _agent_cache
-fi
-{{- end }}
 
 if [ -n "${ZSH_DEBUGRC+1}" ]; then
     zprof
