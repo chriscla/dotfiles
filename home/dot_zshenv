@@ -19,3 +19,6 @@ export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 
 # PATH
 export PATH="/usr/local/sbin:$CARGO_HOME/bin:$PATH"
+
+# Docker Desktop CLI (macOS installs docker + compose plugins here)
+[[ -d "$HOME/.docker/bin" ]] && export PATH="$HOME/.docker/bin:$PATH"
