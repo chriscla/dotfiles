@@ -23,8 +23,13 @@ AddKeysToAgent yes
 # `originalhost` matches the name as typed on the command line, so these blocks
 # do not depend on the HostName rewriting in the Host blocks below, nor on
 # their position in this file.
+#
+# Do NOT quote the path inside exec as \"$HOME/...\" -- OpenSSH 9.6 (Ubuntu
+# 24.04, i.e. murf) fails to parse the nested escape with "Missing Match
+# criteria", breaking every ssh invocation on that host. 10.3 accepts both
+# forms. Unquoted is fine: $HOME contains no spaces on any target platform.
 
-Match originalhost github.com,github-work,github-personal,github-v4lyfe exec "test -S \"$HOME/.bitwarden-ssh-agent.sock\""
+Match originalhost github.com,github-work,github-personal,github-v4lyfe exec "test -S $HOME/.bitwarden-ssh-agent.sock"
     IdentityAgent ~/.bitwarden-ssh-agent.sock
 
 # murf needs the Bitwarden agent for two separate jobs:
@@ -35,7 +40,7 @@ Match originalhost github.com,github-work,github-personal,github-v4lyfe exec "te
 #                    happens to be. This is what makes the GitHub identity
 #                    usable *from* murf, and it survives .zshrc repointing
 #                    $SSH_AUTH_SOCK at ~/.ssh/ssh_auth_sock.
-Match originalhost murf,m.at2311.com,murf.at2311.com exec "test -S \"$HOME/.bitwarden-ssh-agent.sock\""
+Match originalhost murf,m.at2311.com,murf.at2311.com exec "test -S $HOME/.bitwarden-ssh-agent.sock"
     IdentityAgent ~/.bitwarden-ssh-agent.sock
     ForwardAgent ~/.bitwarden-ssh-agent.sock
 
