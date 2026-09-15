@@ -48,9 +48,25 @@ Library/
 .config/aws/config
 {{ end }}
 
+# GitHub identity: deploy only the public key belonging to this machine type, so
+# the wrong identity cannot be referenced even by mistake. The work key never
+# lands on a non-work machine.
+{{ if .work }}
+.ssh/id_github_personal.pub
+{{ else }}
+.ssh/id_github_work.pub
+{{ end }}
+
+# The voltron4lyfe account belongs on personal machines only. Gated on .personal
+# rather than `not .work`, so ephemeral/cloud machines do not get it either.
+{{ if not .personal }}
+.ssh/id_github_v4lyfe.pub
+{{ end }}
+
 {{ if not .trusted }}
 # Not a trusted machine: skip private keys and encrypted files.
-# .ssh/rc, .ssh/config, and .ssh/*.pub contain no secrets so they still deploy.
+# .ssh/rc, .ssh/config, and the .pub files carry no secrets, so they still
+# deploy -- a forwarded agent needs the .pub to select a key.
 .ssh/id_ed25519
 .ssh/id_holiest
 .ssh/ansible_rsa

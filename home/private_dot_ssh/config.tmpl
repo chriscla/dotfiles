@@ -1,19 +1,59 @@
+{{- /* Which GitHub identity is primary on this machine. Both keys live in
+       Bitwarden; only the public halves are deployed. The github-work and
+       github-personal aliases below reach either one explicitly. */ -}}
+{{- $githubKey := "~/.ssh/id_github_personal.pub" -}}
+{{- if .work -}}
+{{-   $githubKey = "~/.ssh/id_github_work.pub" -}}
+{{- end }}
 AddKeysToAgent yes
 
-Host murf
-    ForwardAgent yes
-    HostName murf.at2311.com
+# --- Bitwarden SSH agent ---------------------------------------------------
+# Bitwarden Desktop serves its agent on a Unix socket at
+# ~/.bitwarden-ssh-agent.sock on both macOS and Linux. On WSL2 the app runs on
+# the Windows host and serves the named pipe \\.\pipe\openssh-ssh-agent
+# instead; ~/.dotfile_extras/bw-ssh-agent-relay.sh relays that pipe onto the
+# same socket path, so the path below is correct on all three platforms.
+#
+# The `exec` guard means these blocks apply only where that socket really
+# exists. On a machine reached with agent forwarding (murf) there is no
+# Bitwarden app and no socket, so the guard fails, IdentityAgent is left unset,
+# and ssh uses $SSH_AUTH_SOCK -- which is the agent forwarded from the client.
+# One config, correct on both ends of the forward.
+#
+# `originalhost` matches the name as typed on the command line, so these blocks
+# do not depend on the HostName rewriting in the Host blocks below, nor on
+# their position in this file.
 
-Host m.at2311.com
-    ForwardAgent yes
-    HostName murf.at2311.com
+Match originalhost github.com,github-work,github-personal,github-v4lyfe exec "test -S \"$HOME/.bitwarden-ssh-agent.sock\""
+    IdentityAgent ~/.bitwarden-ssh-agent.sock
 
-Host murf.at2311.com
-    ForwardAgent yes
-{{- if .trusted }}
-    IdentityFile ~/.ssh/id_ed25519
-{{- end }}
+# murf needs the Bitwarden agent for two separate jobs:
+#   IdentityAgent -- authenticate *to* murf with the HomeLab key, which is
+#                    held in Bitwarden just like the GitHub keys.
+#   ForwardAgent  -- name the same socket explicitly so the agent murf can
+#                    reach is Bitwarden's, rather than whatever $SSH_AUTH_SOCK
+#                    happens to be. This is what makes the GitHub identity
+#                    usable *from* murf, and it survives .zshrc repointing
+#                    $SSH_AUTH_SOCK at ~/.ssh/ssh_auth_sock.
+Match originalhost murf,m.at2311.com,murf.at2311.com exec "test -S \"$HOME/.bitwarden-ssh-agent.sock\""
+    IdentityAgent ~/.bitwarden-ssh-agent.sock
+    ForwardAgent ~/.bitwarden-ssh-agent.sock
+
+# All three aliases in ONE block. Host patterns match the name as typed on the
+# command line, never the rewritten HostName, so a separate
+# `Host murf.at2311.com` block does not apply to `ssh murf` -- that would
+# connect as $USER with no IdentityFile and no IdentitiesOnly.
+#
+# IdentitiesOnly is what keeps the GitHub keys out of murf's authentication:
+# without it ssh offers every key in the agent, GitHub's included. Only the
+# .pub is named here; the private half stays in Bitwarden and ssh uses the
+# public key to select it from the agent.
+Host murf m.at2311.com murf.at2311.com
+    HostName murf.at2311.com
     User cyrus
+    ForwardAgent yes
+    IdentityFile ~/.ssh/id_homelab.pub
+    IdentitiesOnly yes
 
 Host klipper
     HostName klipper.at2311.com
@@ -40,21 +80,49 @@ Host zncshell
 {{- end }}
     User bedseller39
 
-# Personal Account
+# GitHub -- two identities, both held in Bitwarden, selected per machine.
+# Private keys live only in Bitwarden and are offered solely by its agent, so
+# just the public halves are deployed here.
+#
+# IdentitiesOnly=yes REQUIRES an explicit IdentityFile. Without one, ssh falls
+# back to the default id_* filenames and then filters the agent down to keys
+# matching those, which silently discards the Bitwarden keys and offers
+# ~/.ssh/id_ed25519 instead. Naming the .pub is enough: ssh uses it to pick the
+# matching key out of the agent and never needs the private half on disk.
+# It is also what keeps these two identities from bleeding into each other --
+# without it ssh would offer both keys and let the server pick.
 Host github.com
     Hostname github.com
     User git
-{{- if .trusted }}
-    IdentityFile ~/.ssh/id_ed25519
-{{- end }}
+    IdentityFile {{ $githubKey }}
     IdentitiesOnly=yes
 
-# Holiest
+# Same key as github.com above, but names the identity explicitly so a remote
+# reads as a deliberate choice:  git@github-work:org/repo.git
+# Only this machine's own identity gets an alias -- the other key's .pub is not
+# deployed here (see .chezmoiignore), so an alias for it could not resolve a key.
+{{- if .work }}
+Host github-work
+    Hostname github.com
+    User git
+    IdentityFile ~/.ssh/id_github_work.pub
+    IdentitiesOnly=yes
+{{- else }}
+Host github-personal
+    Hostname github.com
+    User git
+    IdentityFile ~/.ssh/id_github_personal.pub
+    IdentitiesOnly=yes
+{{- end }}
+
+# voltron4lyfe account, personal machines only (see .chezmoiignore). Held in
+# Bitwarden like the others, so only the .pub is here and no .trusted gate is
+# needed -- there is no private key to withhold. Reached only by explicitly
+# naming this alias, never from github.com.
+{{- if .personal }}
 Host github-v4lyfe
     Hostname github.com
     User git
-{{- if .trusted }}
-    IdentityFile ~/.ssh/id_holiest2
-{{- end }}
+    IdentityFile ~/.ssh/id_github_v4lyfe.pub
     IdentitiesOnly=yes
-
+{{- end }}

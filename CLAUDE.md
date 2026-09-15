@@ -66,9 +66,79 @@ Git identity (name, work email, personal email) is stored **only** in the encryp
 
 ### WSL2
 
-Detected via `{{ contains "microsoft" (lower .chezmoi.kernel.osrelease) }}`. On WSL2:
+Detected via `{{ and (hasKey .chezmoi.kernel "osrelease") (contains "microsoft" (lower .chezmoi.kernel.osrelease)) }}`.
+The `hasKey` guard is required — `.chezmoi.kernel` is an empty map on macOS, so
+the unguarded form fails template execution with `map has no entry for key "osrelease"`.
+On WSL2:
 - VS Code/Cursor extension scripts exit early (editors live on Windows host)
 - Binaries under `/mnt/c/` are Windows-side — don't install into them from WSL2
+
+### SSH Agent (Bitwarden)
+
+SSH keys are held by Bitwarden Desktop's agent, not as files on disk. `~/.ssh/config`
+names one socket path, `~/.bitwarden-ssh-agent.sock`, on every platform:
+
+- **macOS / native Linux** — Bitwarden Desktop creates that socket itself.
+- **WSL2** — Bitwarden is a Windows app serving the named pipe
+  `\\.\pipe\openssh-ssh-agent`. `dot_dotfile_extras/executable_bw-ssh-agent-relay.sh`
+  relays it onto the same socket path with `socat` + `npiperelay.exe` (deps in
+  `Brewfile.tmpl` and `scoop.json`), started from `.zshrc`.
+- **Forwarded-agent hosts (murf)** — no Bitwarden, no socket. The `Match ... exec`
+  guards in `config.tmpl` fail there, leaving `IdentityAgent` unset so ssh uses
+  `$SSH_AUTH_SOCK`, i.e. the agent forwarded from the client.
+
+Two non-obvious constraints:
+- `IdentitiesOnly=yes` **requires** an explicit `IdentityFile`. With none, ssh falls
+  back to the default `id_*` filenames and filters the agent down to keys matching
+  those, silently discarding Bitwarden's key. Pointing `IdentityFile` at the `.pub`
+  is enough — ssh uses it to select the key from the agent.
+- The `.pub` files must deploy on untrusted machines too (they carry no secrets, and
+  `.chezmoiignore` only excludes the private halves), otherwise agent forwarding to
+  those machines cannot select a key.
+
+#### Two GitHub identities
+
+Bitwarden holds `ChrisCla Github Work` and `ChrisCla Github Personal`. Each machine
+type gets **only its own public key**: `.chezmoiignore` drops
+`id_github_personal.pub` on work machines and `id_github_work.pub` everywhere else.
+`config.tmpl` then binds that key to `github.com` and emits a single matching alias
+(`github-work` on work machines, `github-personal` otherwise), so a remote can name
+the identity deliberately:
+
+```sh
+git remote set-url origin git@github-work:org/repo.git
+```
+
+The wrong identity therefore cannot be selected by mistake — its `.pub` is not on the
+machine at all, and `IdentitiesOnly=yes` means ssh offers nothing else.
+
+A third account, `voltron4lyfe`, uses the `github-v4lyfe` alias
+(`id_github_v4lyfe.pub`) and is deployed on **personal machines only**. Its gate is
+`{{ if not .personal }}` rather than `{{ if .work }}`/`{{ else }}`, so ephemeral and
+cloud machines do not get it either. Both the `.pub` and the `Host` block are gated —
+a `Host` block naming an undeployed key would fail confusingly rather than cleanly.
+
+Net effect per machine type:
+
+| machine | `.pub` files deployed | aliases |
+|---|---|---|
+| `work` | `id_github_work.pub` | `github.com`, `github-work` |
+| `personal` | `id_github_personal.pub`, `id_github_v4lyfe.pub` | `github.com`, `github-personal`, `github-v4lyfe` |
+| ephemeral (neither flag) | `id_github_personal.pub` | `github.com`, `github-personal` |
+
+When adding a machine, `work` vs `personal` at `chezmoi init` is what picks the
+GitHub identity. Getting it wrong deploys the wrong key reference.
+
+#### Agent forwarding caveat
+
+**Agent forwarding is all-or-nothing.** A forwarded socket exposes every key the
+agent holds, and `ssh_config` cannot filter it — `IdentityFile`/`IdentitiesOnly`
+govern only what is *offered for authentication*, not what the remote can reach
+through the forwarded agent. Both GitHub keys are served by one Bitwarden agent, so
+forwarding to murf does expose the work key to murf; this is a deliberate, accepted
+tradeoff, mitigated by the per-machine key deployment above and Bitwarden's per-use
+approval prompt. Do not attempt to fix it by adding `IdentitiesOnly` to a forwarded
+host — that is not what the option does.
 
 ### Zsh Performance
 

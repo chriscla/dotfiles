@@ -184,6 +184,13 @@
         },
         {
             "Source": "main",
+            "Updated": "2026-09-15T00:00:00.0000000-07:00",
+            "Name": "npiperelay",
+            "Info": "",
+            "Version": "latest"
+        },
+        {
+            "Source": "main",
             "Updated": "2024-12-21T06:23:57.6191861-08:00",
             "Name": "oh-my-posh",
             "Info": "",

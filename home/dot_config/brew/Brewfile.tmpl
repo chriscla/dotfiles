@@ -49,6 +49,9 @@ end
 if OS.linux?
     # Sometimes tool names differ slightly
     brew "gcc" 
+    # Relays Bitwarden's Windows named-pipe agent into WSL2
+    # (see ~/.dotfile_extras/bw-ssh-agent-relay.sh). Harmless on native Linux.
+    brew "socat"
 end
 
 {{- if .trusted }}

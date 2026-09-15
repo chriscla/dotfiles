@@ -9,6 +9,23 @@ export COLORTERM="truecolor"
 if [[ -S "$HOME/.ssh/ssh_auth_sock" || -L "$HOME/.ssh/ssh_auth_sock" ]]; then
   export SSH_AUTH_SOCK="$HOME/.ssh/ssh_auth_sock"
 fi
+{{- if and (hasKey .chezmoi.kernel "osrelease") (contains "microsoft" (lower .chezmoi.kernel.osrelease)) }}
+
+# WSL2: Bitwarden Desktop is a Windows app, so relay its named pipe onto the
+# socket path ~/.ssh/config expects. Gated on the socket being absent to keep
+# the warm path fork-free; if the relay ever dies leaving a stale socket file
+# behind, run ~/.dotfile_extras/bw-ssh-agent-relay.sh by hand to rebuild it.
+if [[ ! -S "$HOME/.bitwarden-ssh-agent.sock" ]]; then
+  "$HOME/.dotfile_extras/bw-ssh-agent-relay.sh" 2>/dev/null
+fi
+{{- end }}
+
+# Fall back to Bitwarden's own agent when nothing was forwarded in. ~/.ssh/config
+# pins this socket for github.com regardless of $SSH_AUTH_SOCK; this is for bare
+# `ssh-add -L`, other hosts, and tools that read the variable directly.
+if [[ ! -S "${SSH_AUTH_SOCK:-}" && -S "$HOME/.bitwarden-ssh-agent.sock" ]]; then
+  export SSH_AUTH_SOCK="$HOME/.bitwarden-ssh-agent.sock"
+fi
 
 # XDG-compliant history/config locations
 export PSQL_HISTORY="$XDG_STATE_HOME/psql/history"
