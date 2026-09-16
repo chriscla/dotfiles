@@ -49,6 +49,12 @@ encryption = "age"
     recipient = "age1eyqg7p8rzdnnen3glv39vvu5pdmwsfch6rclnj0g8r57utnx3qvqkxgqtu"
 {{- end }}
 
+{{ if eq .chezmoi.os "windows" -}}
+[interpreters.ps1]
+    command = "pwsh"
+    args = ["-NoProfile"]
+
+{{ end -}}
 [data]
     ephemeral = {{ $ephemeral }}
     work = {{ $work }}

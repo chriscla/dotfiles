@@ -29,7 +29,7 @@ foreach ($cmdName in @("cursor", "code")) {
     if (-not $cmd) { continue }
     $extensions = if ($cmdName -eq "cursor") { $extensionsCursor } else { $extensionsCode }
     foreach ($ext in $extensions) {
-        Write-Output "📦 $($cmd.Name) --install-extension $ext --profile Default"
+        Write-Output "[install] $($cmd.Name) --install-extension $ext --profile Default"
         & $cmdName --install-extension $ext --profile "Default" 2>$null
     }
 }
