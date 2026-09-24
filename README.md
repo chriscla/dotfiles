@@ -47,7 +47,6 @@ chezmoi init --apply git@github.com:chriscla/dotfiles.git
 3. When **trusted**, prompt for the **age passphrase** to decrypt [`key.txt.age`](home/key.txt.age) into `~/.config/chezmoi/key.txt` (see [`run_onchange_before_decrypt-private-key.sh.tmpl`](home/run_onchange_before_decrypt-private-key.sh.tmpl)).
 4. Install **Homebrew** if it is missing, then **bundle** packages from [`Brewfile.tmpl`](home/dot_config/brew/Brewfile.tmpl).
 5. Fetch **external** dependencies ([`.chezmoiexternal.toml`](home/.chezmoiexternal.toml): Oh My Zsh, tmux theme, Neovim plugins archives, etc.).
-6. On **macOS**, run **iTerm2** theme sync when applicable ([`run_onchange_after_configure-iterm2.sh.tmpl`](home/run_onchange_after_configure-iterm2.sh.tmpl)).
 
 Optional **encrypted machine names** for template data: JSON in [`encrypted_private_dot_config_chezmoi_machine-names.json.age`](home/encrypted_private_dot_config_chezmoi_machine-names.json.age) (edit with `chezmoi edit`); merged into `hostnames` via [`home/.chezmoidata.toml.tmpl`](home/.chezmoidata.toml.tmpl) once `~/.config/chezmoi/key.txt` exists (often after the first successful trusted apply).
 

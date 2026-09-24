@@ -1,3 +1,5 @@
 .finicky.js
 config/spaceship.zsh
 .oh-my-tmux
+.dotfile_extras/terminal_themes
+Library/Application Support/iTerm2/DynamicProfiles/default_profile.json

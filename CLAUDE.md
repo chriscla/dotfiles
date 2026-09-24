@@ -58,7 +58,7 @@ Git identity (name, work email, personal email) is stored **only** in the encryp
 
 ### External Dependencies
 
-`home/.chezmoiexternal.toml` pulls archives/files from GitHub: Oh My Zsh, zsh plugins (autosuggestions, syntax-highlighting, fzf-tab), oh-my-tmux, vim plugins, and iTerm2 color schemes (macOS only).
+`home/.chezmoiexternal.toml` pulls archives/files from GitHub: Oh My Zsh, zsh plugins (autosuggestions, syntax-highlighting, fzf-tab), oh-my-tmux, and vim plugins.
 
 ### Prompt
 
