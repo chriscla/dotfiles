@@ -43,7 +43,9 @@ format = "[$symbol($version )]($style)"
 disabled = true
 
 [sudo]
-disabled = false
+# Costs ~10ms on every prompt render and outputs nothing unless a sudo
+# credential is currently cached. Not worth the per-command latency.
+disabled = true
 format = "[$symbol]($style)"
 
 {{- if .work }}

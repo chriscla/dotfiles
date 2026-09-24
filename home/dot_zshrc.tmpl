@@ -65,6 +65,10 @@ zstyle ':omz:plugins:ssh-agent' lazy yes
 zstyle ':omz:plugins:ssh-agent' agent-forwarding yes
 zstyle ':autocomplete:*' insert-unambiguous yes
 
+# Starship draws the prompt (ZSH_THEME="") and computes git state itself, so
+# omz's async git prompt forks a subshell every prompt for data nothing reads.
+zstyle ':omz:alpha:lib:git' async-prompt no
+
 # Auto-start tmux on SSH sessions
 if [[ -n "$SSH_CONNECTION" ]]; then
   ZSH_TMUX_AUTOSTART=true
@@ -206,6 +210,9 @@ if (( $+commands[starship] )); then
   fi
   source "$_starship_cache"
   unset _starship_cache
+  # starship.toml sets no `right_format`, so RPROMPT spawns a second starship
+  # process every prompt that renders 0 bytes. Costs ~7ms per command.
+  RPROMPT=""
 fi
 
 if [ -n "${ZSH_DEBUGRC+1}" ]; then
