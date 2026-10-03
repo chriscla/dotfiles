@@ -4,6 +4,5 @@
     "command": "bash ~/.claude/statusline-wrapper.sh"
   },
   "syntaxHighlightingDisabled": false,
-  "theme": "dark-ansi",
-  "skipAutoPermissionPrompt": true
+  "theme": "auto"
 }

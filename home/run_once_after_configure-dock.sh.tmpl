@@ -1,0 +1,37 @@
+{{ if (eq .chezmoi.os "darwin") -}}
+#!/bin/bash
+set -eu
+
+# Strip unwanted default apps from the Dock. Runs once per machine, so apps
+# re-added by hand later are left alone.
+REMOVE=(Safari Mail Maps FaceTime Phone Calendar Contacts Reminders Music TV Games)
+
+PLIST="$(mktemp -t dock).plist"
+trap 'rm -f "$PLIST"' EXIT
+defaults export com.apple.dock "$PLIST"
+
+PB=/usr/libexec/PlistBuddy
+count=0
+while "$PB" -c "Print :persistent-apps:$count" "$PLIST" >/dev/null 2>&1; do
+    count=$((count + 1))
+done
+
+# Walk backwards so deletions don't shift the indices still to visit.
+# Match on the bundle path, not file-label, which is localized.
+changed=0
+for ((i = count - 1; i >= 0; i--)); do
+    url=$("$PB" -c "Print :persistent-apps:$i:tile-data:file-data:_CFURLString" "$PLIST" 2>/dev/null || true)
+    for app in "${REMOVE[@]}"; do
+        if [[ "$url" == */"$app".app/ ]]; then
+            "$PB" -c "Delete :persistent-apps:$i" "$PLIST"
+            changed=1
+            break
+        fi
+    done
+done
+
+if [[ $changed -eq 1 ]]; then
+    defaults import com.apple.dock "$PLIST"
+    killall Dock
+fi
+{{ end -}}
