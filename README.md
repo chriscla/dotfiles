@@ -8,27 +8,44 @@ This repository is managed with [chezmoi](https://www.chezmoi.io/). Use it to bo
 
 ## New machine: macOS or Linux
 
-### 1. Prerequisites
+### 1. Prerequisites (install manually, in this order)
 
-- **Git** and **curl** (usually present; on macOS you may need [Command Line Tools](https://developer.apple.com/library/archive/technotes/tn2339/_index.html): `xcode-select --install`).
-- **SSH access to GitHub** if you clone with SSH (recommended for this repo’s remote). Add your key to GitHub before `chezmoi init`, or use an HTTPS URL instead.
+On a fresh machine these must exist **before** `chezmoi init` — chezmoi cannot bootstrap them for you on a trusted (work/personal) machine.
+
+1. **Git** — on macOS, install the [Command Line Tools](https://developer.apple.com/library/archive/technotes/tn2339/_index.html):
+
+   ```sh
+   xcode-select --install
+   ```
+
+2. **Homebrew** — from [brew.sh](https://brew.sh/):
+
+   ```sh
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+
+   Then follow the "Next steps" it prints to add `brew` to your `PATH` (e.g. `eval "$(/opt/homebrew/bin/brew shellenv)"`).
+
+3. **Bitwarden Desktop** and the **Bitwarden CLI** (`bw`):
+
+   ```sh
+   brew install --cask bitwarden
+   brew install bitwarden-cli
+   ```
+
+   - **Desktop** serves the SSH agent (`~/.bitwarden-ssh-agent.sock`) that holds the GitHub keys. Sign in and enable the SSH agent in its settings — this is what lets you clone the repo over SSH.
+   - **CLI** is used by chezmoi's `bitwarden` template function (e.g. [`create_private_id_holiest.tmpl`](home/private_dot_ssh/create_private_id_holiest.tmpl)). Log in and unlock it in the shell you'll run chezmoi from:
+
+     ```sh
+     bw login
+     export BW_SESSION="$(bw unlock --raw)"
+     ```
 
 ### 2. Install chezmoi
 
-You can do this **with or without** Homebrew first.
-
-| Approach | When to use |
-|----------|-------------|
-| **Official install script** (no Homebrew) | Fewest steps: install chezmoi, then let the first `apply` install Homebrew via [`run_once_install-brew.sh.tmpl`](home/run_once_install-brew.sh.tmpl). |
-| **Homebrew first** | If you prefer `brew install chezmoi` or already use Homebrew. Install Homebrew from [brew.sh](https://brew.sh/), then: `brew install chezmoi`. |
-
-Example (script install; adjust the install path to match [chezmoi’s install docs](https://www.chezmoi.io/install/) if you prefer):
-
 ```sh
-sh -c "$(curl -fsLS https://chezmoi.io/get)"
+brew install chezmoi
 ```
-
-Ensure `chezmoi` is on your `PATH` (open a new shell or add the bin directory chezmoi prints).
 
 ### 3. Initialize this repo and apply
 
@@ -45,7 +62,7 @@ chezmoi init --apply git@github.com:chriscla/dotfiles.git
 1. Prompt for **headless** and **ephemeral** when running interactively (non-TTY installs default to ephemeral with no secrets).
 2. If **not** ephemeral, prompt for **machine type**: `work` or `personal`. Both enable **trusted** mode (age encryption, SSH private keys, and other encrypted material). See [`home/.chezmoi.toml.tmpl`](home/.chezmoi.toml.tmpl) for `work`, `personal`, and `trusted`.
 3. When **trusted**, prompt for the **age passphrase** to decrypt [`key.txt.age`](home/key.txt.age) into `~/.config/chezmoi/key.txt` (see [`run_onchange_before_decrypt-private-key.sh.tmpl`](home/run_onchange_before_decrypt-private-key.sh.tmpl)).
-4. Install **Homebrew** if it is missing, then **bundle** packages from [`Brewfile.tmpl`](home/dot_config/brew/Brewfile.tmpl).
+4. **Bundle** Homebrew packages from [`Brewfile.tmpl`](home/dot_config/brew/Brewfile.tmpl).
 5. Fetch **external** dependencies ([`.chezmoiexternal.toml`](home/.chezmoiexternal.toml): Oh My Zsh, tmux theme, Neovim plugins archives, etc.).
 
 Optional **encrypted machine names** for template data: JSON in [`encrypted_private_dot_config_chezmoi_machine-names.json.age`](home/encrypted_private_dot_config_chezmoi_machine-names.json.age) (edit with `chezmoi edit`); merged into `hostnames` via [`home/.chezmoidata.toml.tmpl`](home/.chezmoidata.toml.tmpl) once `~/.config/chezmoi/key.txt` exists (often after the first successful trusted apply).
