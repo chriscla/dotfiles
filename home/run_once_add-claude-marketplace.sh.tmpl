@@ -1,0 +1,20 @@
+#!/bin/bash
+set -euo pipefail
+
+{{ if .ephemeral -}}
+exit 0
+{{ end -}}
+
+if ! command -v claude &> /dev/null; then
+    echo "⏭️  claude not in PATH, skipping marketplace registration"
+    exit 0
+fi
+
+MARKETPLACE="chriscla/everything-claude-code"
+
+if claude plugin marketplace list 2>/dev/null | grep -q "$MARKETPLACE"; then
+    echo "✅ Marketplace $MARKETPLACE already registered"
+else
+    echo "📦 Adding marketplace $MARKETPLACE..."
+    claude plugin marketplace add "$MARKETPLACE"
+fi
