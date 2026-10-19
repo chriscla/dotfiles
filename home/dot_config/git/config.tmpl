@@ -1,0 +1,14 @@
+# Read alongside ~/.gitconfig (which is encrypted and holds identity); settings
+# here carry no secrets. Falls back to plain less/cat where delta isn't installed.
+[core]
+	pager = command -v delta >/dev/null 2>&1 && exec delta || exec less
+{{- if eq .chezmoi.os "windows" }}
+	# Git for Windows bundles its own MSYS ssh, which cannot reach the Bitwarden
+	# SSH agent (a Windows named pipe). Use Windows' OpenSSH client, which can.
+	sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
+{{- end }}
+[interactive]
+	diffFilter = command -v delta >/dev/null 2>&1 && exec delta --color-only || exec cat
+[delta]
+	navigate = true
+	line-numbers = true

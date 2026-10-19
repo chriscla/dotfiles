@@ -355,6 +355,11 @@ bind -T off F12 \
   set -u status-style \;\
   refresh-client -S
 
+# -- reviewing changes ---------------------------------------------------------
+# prefix + g: lazygit in a popup, rooted at the current pane's directory, for
+# browsing what an agent (or anyone) changed in the pane next door
+bind g display-popup -E -w 90% -h 90% -d "#{pane_current_path}" lazygit
+
 
 # -- tpm -----------------------------------------------------------------------
 

@@ -1,5 +1,0 @@
-# Windows only (ignored elsewhere in .chezmoiignore). Git for Windows bundles
-# its own MSYS ssh, which cannot reach the Bitwarden SSH agent (a Windows named
-# pipe). Use Windows' OpenSSH client, which can.
-[core]
-	sshCommand = C:/Windows/System32/OpenSSH/ssh.exe

@@ -1,0 +1,10 @@
+git:
+  # Cycle with `|`: delta inline, delta side-by-side, plain git
+  diffRenderers:
+    - command: delta --{{colorScheme}} --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
+    - command: delta --{{colorScheme}} --paging=never --side-by-side --width={{width}}
+      name: delta side-by-side
+    - type: rawGit
+      name: default
+os:
+  editPreset: nvim
