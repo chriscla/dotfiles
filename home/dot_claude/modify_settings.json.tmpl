@@ -1,0 +1,15 @@
+#!/bin/bash
+# Overlay the managed settings onto the live ~/.claude/settings.json.
+# Managed keys win; keys only present locally (work plugins, marketplaces,
+# model choice, anything Claude Code writes itself) are preserved.
+set -euo pipefail
+
+current=$(cat)
+[ -n "$current" ] || current='{}'
+
+managed=$(cat <<'JSON'
+{{ includeTemplate "claude-settings.json" . }}
+JSON
+)
+
+jq -n --argjson cur "$current" --argjson man "$managed" '$cur * $man'
