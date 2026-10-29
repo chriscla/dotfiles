@@ -153,6 +153,8 @@ alias vim="nvim"
 alias vi="nvim"
 alias nvim-update='nvim --headless "+Lazy! sync" +qa && chezmoi add ~/.config/nvim/lazy-lock.json'
 alias zsh_zprof='time ZSH_DEBUGRC=1 zsh -i -c exit'
+# Claude in its own git worktree, for parallel or unattended agents
+alias cw="claude --worktree"
 # Fully restart tmux: drop continuum's restore target so a stale session can't
 # resurrect, then kill the server. Reattach in a fresh shell to pick up -u.
 tmux_reset() {
