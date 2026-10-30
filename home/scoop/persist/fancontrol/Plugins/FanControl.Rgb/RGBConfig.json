@@ -1,0 +1,34 @@
+{
+  "LogLevel": "Info",
+  "ServerIp": "127.0.0.1",
+  "ServerPort": 6742,
+  "Framerate": 15,
+  "TransitionSpeed": 0.1,
+  "Reconnect": {
+    "MaxRetries": 120,
+    "DelaySeconds": 5
+  },
+  "Rules": [
+    {
+      "Id": "rgb_normal",
+      "Name": "RGB Normal (Rainbow)",
+      "DeviceRegex": ".*ASUS.*",
+      "ActivationThreshold": 0.0,
+      "Effect": { "Type": "Rainbow" }
+    },
+    {
+      "Id": "rgb_warm",
+      "Name": "RGB Warm (Blue)",
+      "DeviceRegex": ".*ASUS.*",
+      "ActivationThreshold": 55.0,
+      "Effect": { "Type": "Static", "ColorHex": "#0040FF", "ModulateByValue": false }
+    },
+    {
+      "Id": "rgb_hot",
+      "Name": "RGB Hot (Purple)",
+      "DeviceRegex": ".*ASUS.*",
+      "ActivationThreshold": 70.0,
+      "Effect": { "Type": "Static", "ColorHex": "#A000FF", "ModulateByValue": false }
+    }
+  ]
+}
