@@ -1,0 +1,24 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- /*
+  Overlay the managed settings onto the live ~/.claude/settings.json.
+  Managed keys win; keys only present locally (work plugins, marketplaces,
+  model choice, anything Claude Code writes itself) are preserved.
+  Written as a modify-template (not a bash+jq script) so it runs on Windows too.
+  Merges two levels deep: nested objects like statusLine keep local-only subkeys.
+*/ -}}
+{{- $cur := dict -}}
+{{- if trim .chezmoi.stdin -}}
+{{-   $cur = fromJson .chezmoi.stdin -}}
+{{- end -}}
+{{- $man := includeTemplate "claude-settings.json" . | fromJson -}}
+{{- range $k, $v := $man -}}
+{{-   $old := get $cur $k -}}
+{{-   if and (kindIs "map" $v) (kindIs "map" $old) -}}
+{{-     range $k2, $v2 := $v -}}
+{{-       $_ := set $old $k2 $v2 -}}
+{{-     end -}}
+{{-   else -}}
+{{-     $_ := set $cur $k $v -}}
+{{-   end -}}
+{{- end -}}
+{{- toPrettyJson $cur }}
