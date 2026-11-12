@@ -57,13 +57,6 @@
             "Source": "main"
         },
         {
-            "Name": "docker",
-            "Info": "",
-            "Version": "29.4.0",
-            "Updated": "2026-04-07T17:44:40.2097708-07:00",
-            "Source": "main"
-        },
-        {
             "Name": "dropbox-np",
             "Info": "",
             "Version": "nightly-20260407",
@@ -75,6 +68,13 @@
             "Info": "",
             "Version": "3.9.9",
             "Updated": "2025-01-11T16:25:50.3122073-08:00",
+            "Source": "extras"
+        },
+        {
+            "Name": "etcher",
+            "Info": "",
+            "Version": "",
+            "Updated": "",
             "Source": "extras"
         },
         {
@@ -120,25 +120,11 @@
             "Source": "main"
         },
         {
-            "Name": "gimp",
-            "Info": "Install failed",
-            "Version": null,
-            "Updated": "2025-11-06T08:06:04.3414232-08:00",
-            "Source": null
-        },
-        {
             "Name": "git",
             "Info": "",
             "Version": "2.52.0",
             "Updated": "2026-01-10T09:19:54.8159069-08:00",
             "Source": "main"
-        },
-        {
-            "Name": "googlechrome",
-            "Info": "",
-            "Version": "143.0.7499.193",
-            "Updated": "2026-01-10T09:20:14.659866-08:00",
-            "Source": "extras"
         },
         {
             "Name": "hwinfo",
@@ -204,13 +190,6 @@
             "Source": "extras"
         },
         {
-            "Name": "mingw",
-            "Info": "",
-            "Version": "16.1.0-rt_v14-rev1",
-            "Updated": "2026-06-20T11:16:16.3286099-07:00",
-            "Source": "main"
-        },
-        {
             "Name": "neovim",
             "Info": "",
             "Version": "0.11.5",
@@ -218,24 +197,17 @@
             "Source": "main"
         },
         {
-            "Name": "netcat",
-            "Info": "Install failed",
-            "Version": null,
-            "Updated": "2026-04-07T17:51:22.6868949-07:00",
-            "Source": null
-        },
-        {
-            "Name": "ngspice",
-            "Info": "",
-            "Version": "46",
-            "Updated": "2026-06-10T09:24:18.45706-07:00",
-            "Source": "extras"
-        },
-        {
             "Name": "notepadplusplus",
             "Info": "",
             "Version": "8.9.5",
             "Updated": "2026-05-14T16:56:19.3481099-07:00",
+            "Source": "extras"
+        },
+        {
+            "Name": "npiperelay",
+            "Info": "",
+            "Version": "",
+            "Updated": "",
             "Source": "extras"
         },
         {
@@ -278,20 +250,6 @@
             "Info": "",
             "Version": "10.55",
             "Updated": "2026-05-14T16:56:34.4039864-07:00",
-            "Source": "extras"
-        },
-        {
-            "Name": "plex-desktop",
-            "Info": "",
-            "Version": "1.112.0.359-0d79a49f",
-            "Updated": "2026-05-14T16:56:45.0797945-07:00",
-            "Source": "extras"
-        },
-        {
-            "Name": "powertoys",
-            "Info": "",
-            "Version": "0.99.1",
-            "Updated": "2026-05-16T08:05:49.4108602-07:00",
             "Source": "extras"
         },
         {
@@ -365,6 +323,13 @@
             "Source": "main"
         },
         {
+            "Name": "uv",
+            "Info": "",
+            "Version": "",
+            "Updated": "",
+            "Source": "main"
+        },
+        {
             "Name": "vcredist2022",
             "Info": "",
             "Version": "14.50.35719.0",
@@ -400,18 +365,18 @@
             "Source": "extras"
         },
         {
+            "Name": "windowsdesktop-runtime-lts",
+            "Info": "Global install",
+            "Version": "10.0.1",
+            "Updated": "2026-01-10T09:29:22.0518398-08:00",
+            "Source": "extras"
+        },
+        {
             "Name": "winscp",
             "Info": "",
             "Version": "6.5.5",
             "Updated": "2026-01-10T09:25:44.4406855-08:00",
             "Source": "extras"
-        },
-        {
-            "Name": "youtube-dl",
-            "Info": "",
-            "Version": "2021.12.17",
-            "Updated": "2026-05-14T16:57:08.4494734-07:00",
-            "Source": "main"
         },
         {
             "Name": "youtube-dl-gui",
@@ -425,13 +390,6 @@
             "Info": "",
             "Version": "1.2.6",
             "Updated": "2026-05-14T16:57:19.2396794-07:00",
-            "Source": "extras"
-        },
-        {
-            "Name": "windowsdesktop-runtime-lts",
-            "Info": "Global install",
-            "Version": "10.0.1",
-            "Updated": "2026-01-10T09:29:22.0518398-08:00",
             "Source": "extras"
         }
     ],
