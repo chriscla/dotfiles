@@ -1,0 +1,6 @@
+# Chezmoi copies source files byte for byte, so keep them LF on every
+# platform. Without this, Windows' core.autocrlf=true checks the tree out
+# as CRLF and deploys CRLF keys and scripts (the CRLF in id_github_personal.pub
+# made Git's bundled ssh fail with "error in libcrypto").
+* text=auto eol=lf
+*.age binary

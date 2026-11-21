@@ -17,6 +17,7 @@ Documents
 scoop/
 scoop.json
 *.ps1
+.config/git/config
 {{ else }} # Ignore on Windows
 *.sh
 .bash_aliases
