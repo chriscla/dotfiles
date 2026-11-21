@@ -34,7 +34,9 @@ if ! command -v brew &> /dev/null || [ "$(id -u)" -eq 0 ]; then
 fi
 
 echo "📦 Installing packages from Brewfile..."
-CHEZMOI="{{ .chezmoi.executable }}"
+# Resolve at run time, not render time: the executable path embeds the brew
+# Cellar version, so baking it in made every chezmoi upgrade rerun this script.
+CHEZMOI="${CHEZMOI_EXECUTABLE:-$(command -v chezmoi)}"
 "$CHEZMOI" execute-template < "{{ joinPath .chezmoi.sourceDir "dot_config/brew/Brewfile.tmpl" }}" | \
     brew bundle --file=/dev/stdin
 
