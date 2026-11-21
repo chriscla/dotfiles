@@ -70,7 +70,6 @@ Detected via `{{ and (hasKey .chezmoi.kernel "osrelease") (contains "microsoft" 
 The `hasKey` guard is required — `.chezmoi.kernel` is an empty map on macOS, so
 the unguarded form fails template execution with `map has no entry for key "osrelease"`.
 On WSL2:
-- VS Code/Cursor extension scripts exit early (editors live on Windows host)
 - Binaries under `/mnt/c/` are Windows-side — don't install into them from WSL2
 
 ### SSH Agent (Bitwarden)
