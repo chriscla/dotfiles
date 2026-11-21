@@ -1,64 +1,57 @@
 {{ if not (eq .chezmoi.os "windows") }}
+# Pinned to commit SHAs so upstream changes never arrive unannounced. To
+# update one, replace its SHA with a newer commit and run `chezmoi apply`.
 [".oh-my-zsh"]
     type = "archive"
-    url = "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
+    url = "https://github.com/ohmyzsh/ohmyzsh/archive/c0140703a53eb0d22be44f7bac318d0baacc927c.tar.gz"
     exact = true
     stripComponents = 1
-    refreshPeriod = "168h"
     exclude = ["*/.*", "*/templates", "*/themes"]
 [".oh-my-zsh/custom/plugins/zsh-autosuggestions"]
     type = "archive"
-    url = "https://github.com/zsh-users/zsh-autosuggestions/archive/master.tar.gz"
+    url = "https://github.com/zsh-users/zsh-autosuggestions/archive/85919cd1ffa7d2d5412f6d3fe437ebdbeeec4fc5.tar.gz"
     exact = true
     stripComponents = 1
-    refreshPeriod = "168h"
     exclude = ["*.md", ".gitignore", ".github/**", "*/.editorconfig"]
 [".oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
     type = "archive"
-    url = "https://github.com/zsh-users/zsh-syntax-highlighting/archive/master.tar.gz"
+    url = "https://github.com/zsh-users/zsh-syntax-highlighting/archive/e6683f20e5c38d3e5447f45845d04ddda75d0f23.tar.gz"
     exact = true
     stripComponents = 1
-    refreshPeriod = "168h"
     exclude = ["*.md", ".gitignore", ".github/**", "*/.editorconfig"]
 [".oh-my-zsh/custom/plugins/fzf-tab"]
     type = "archive"
-    url = "https://github.com/Aloxaf/fzf-tab/archive/master.tar.gz"
+    url = "https://github.com/Aloxaf/fzf-tab/archive/24105b15714bfec37989ed5c5b6e60f572253019.tar.gz"
     exact = true
     stripComponents = 1
-    refreshPeriod = "168h"
     exclude = ["*.md", ".gitignore", ".github/**"]
 [".local/share/oh-my-tmux"]
     type = "archive"
-    url = "https://github.com/gpakosz/.tmux/archive/master.tar.gz"
+    url = "https://github.com/gpakosz/.tmux/archive/58a3dcc0d718ec0fa1c0d5a2fddd640a1ad7a5b7.tar.gz"
     exact = true
     stripComponents = 1
-    refreshPeriod = "168h"
     exclude = ["*.md", ".gitignore", ".github/**"]
 [".vim/basic.vim"]
     type = "file"
-    url = "https://raw.githubusercontent.com/amix/vimrc/master/vimrcs/basic.vim"
-    refreshPeriod = "168h"
+    url = "https://raw.githubusercontent.com/amix/vimrc/46294d589d15d2e7308cf76c58f2df49bbec31e8/vimrcs/basic.vim"
 [".vim/pack/plugins/start/gruvbox"]
     type = "archive"
-    url = "https://github.com/morhetz/gruvbox/archive/master.tar.gz"
+    url = "https://github.com/morhetz/gruvbox/archive/ef8864bb42bf244f0295d1c5a403b27e3d139695.tar.gz"
     exact = true
     stripComponents = 1
-    refreshPeriod = "168h"
     exclude = ["*.md", ".gitignore", ".github/**"]
 [".vim/pack/plugins/opt/chezmoi"]
     type = "archive"
-    url = "https://github.com/alker0/chezmoi.vim/archive/master.tar.gz"
+    url = "https://github.com/alker0/chezmoi.vim/archive/7a498ea65f658993237fb0469001bdf71f68cf94.tar.gz"
     exact = true
     stripComponents = 1
-    refreshPeriod = "168h"
     exclude = ["*.md", ".gitignore", ".github/**"]
 {{ if .work }}
 [".oh-my-zsh/custom/plugins/zsh-aws-vault"]
     type = "archive"
-    url = "https://github.com/blimmer/zsh-aws-vault/archive/master.tar.gz"
+    url = "https://github.com/blimmer/zsh-aws-vault/archive/288857c99792d648132b5f8b1227312878a769e4.tar.gz"
     exact = true
     stripComponents = 1
-    refreshPeriod = "168h"
     exclude = ["*.md", ".gitignore", ".github/**"]
 {{ end }}
 {{ end -}}
