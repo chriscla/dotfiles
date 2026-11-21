@@ -86,6 +86,10 @@ names one socket path, `~/.bitwarden-ssh-agent.sock`, on every platform:
 - **Forwarded-agent hosts (murf)** — no Bitwarden, no socket. The `Match ... exec`
   guards in `config.tmpl` fail there, leaving `IdentityAgent` unset so ssh uses
   `$SSH_AUTH_SOCK`, i.e. the agent forwarded from the client.
+- **Native Windows** — the `Match ... exec` blocks are templated out
+  (`ne .chezmoi.os "windows"`): Windows OpenSSH runs `exec` via cmd.exe, which has no
+  `test`, so they only printed an error. Windows ssh already defaults to Bitwarden's
+  `\\.\pipe\openssh-ssh-agent`.
 
 Two non-obvious constraints:
 - `IdentitiesOnly=yes` **requires** an explicit `IdentityFile`. With none, ssh falls

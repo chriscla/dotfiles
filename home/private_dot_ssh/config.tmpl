@@ -29,6 +29,10 @@ AddKeysToAgent yes
 # criteria", breaking every ssh invocation on that host. 10.3 accepts both
 # forms. Unquoted is fine: $HOME contains no spaces on any target platform.
 
+{{- /* Windows OpenSSH runs `exec` through cmd.exe, which has no `test`,
+       so these blocks only print an error there. On Windows Bitwarden serves
+       the default \\.\pipe\openssh-ssh-agent anyway, so nothing is lost. */}}
+{{- if ne .chezmoi.os "windows" }}
 Match originalhost github.com,github-work,github-personal,github-v4lyfe exec "test -S $HOME/.bitwarden-ssh-agent.sock"
     IdentityAgent ~/.bitwarden-ssh-agent.sock
 
@@ -43,6 +47,7 @@ Match originalhost github.com,github-work,github-personal,github-v4lyfe exec "te
 Match originalhost murf,m.at2311.com,murf.at2311.com exec "test -S $HOME/.bitwarden-ssh-agent.sock"
     IdentityAgent ~/.bitwarden-ssh-agent.sock
     ForwardAgent ~/.bitwarden-ssh-agent.sock
+{{- end }}
 
 # All three aliases in ONE block. Host patterns match the name as typed on the
 # command line, never the rewritten HostName, so a separate
